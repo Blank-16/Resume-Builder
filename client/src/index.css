@@ -4,3 +4,9 @@
 * {
     font-family: "EB Garamond", serif;
 }
+
+@layer {
+    button {
+        @apply cursor-pointer;
+    }
+}

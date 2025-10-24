@@ -1,9 +1,7 @@
-import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Home, Dashboard, Layout, Login, Preview, Resumebuilder } from './pages/index'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>

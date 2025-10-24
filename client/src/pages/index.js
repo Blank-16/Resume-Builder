@@ -5,7 +5,7 @@ import Login from './Login.jsx'
 import Preview from './Preview'
 import Resumebuilder from './ResumeBuilder'
 
-export default{
+export {
     Home,
     Layout,
     Dashboard,
