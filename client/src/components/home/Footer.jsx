@@ -1,10 +1,13 @@
+import favicon from '../../assets/favicon.png'
+
 export default function Footer() {
     return (
         <>
             <footer id="contact" className="flex flex-col md:flex-row gap-3 items-center justify-around w-full py-4 text-sm bg-green-400 text-white mt-28">
-            <p className="hover:text-green-800"> 
-                <a href="https://github.com/blank-16" target="blank">@Blank-16</a>
-            </p>
+                <p className="flex gap-3">
+                    <img src={favicon} alt="logo" width={20} className='rounded-4xl'/>
+                    <a href="https://github.com/blank-16" target="_blank" rel="noopener noreferrer" className="hover:text-green-800">@Blank-16</a>
+                </p>
                 <div className="flex items-center gap-4">
                     <a href="#" className="hover:text-green-800 transition-all">
                         Contact Us
