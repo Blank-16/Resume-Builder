@@ -1,4 +1,5 @@
 import {Link, useNavigate} from 'react-router-dom'
+import logoWhite from "../assets/logoWhite.png"
 
 const Navbar = () => {
     const user = { name: 'John Doe' }
@@ -10,11 +11,11 @@ const Navbar = () => {
 
     return (
 
-        <div className="shadow bg-white">
+        <div className="shadow bg-[#fcfbf7]">
 
             <nav className="flex items-center justify-between max-w-7xl mx-auto px-4 py-3.5 text-slate-800 transition-all">
                 <Link to='/'>
-                <img src="/Logo.png" alt="logo" className='h-11 w-auto rounded-xl' />
+                <img src={logoWhite} alt="logo" className='h-11 w-auto rounded-xl' />
                 </Link>
                 <div className="flex items-center gap-4 text-sm">
                     <p className='max-sm:hidden'>Hi, {user?.name}</p>
