@@ -1,7 +1,7 @@
 import { BriefcaseBusiness, Globe, Linkedin, Mail, Phone, User } from 'lucide-react'
 import React from 'react'
 
-const PersonalInfoForm = ({ data, onChange, removeBackground, setRemoveBackground }) => {
+const PersonalInfoForm = ({ data = {}, onChange, removeBackground, setRemoveBackground }) => {
 
     const handleChange = (field, value) => {
         onChange({ ...data, [field]: value })
@@ -19,9 +19,10 @@ const PersonalInfoForm = ({ data, onChange, removeBackground, setRemoveBackgroun
 
     return (
         <div className="">
-            <h3 className="text-lg font-semibold text-gray-900"> </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-1">
                 Personal Information
-                <p className='text-sm text-gray-600'>Get Started with Personal Information</p>
+            </h3>
+            <p className='text-sm text-gray-600 mb-4'>Get Started with Personal Information</p>
                 <div className="flex items-center gap-2">
                     <label className="relative inline-block cursor-pointer">
                         {data.image ? (

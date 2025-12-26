@@ -66,16 +66,17 @@ const ResumeBuilder = () => {
   const loadingExistingResume = async () => {
     const resume = dummyResumeData.find(resume => resume._id === resumeId)
     if (resume) {
-      setResumeData(resume)
+      setResumeData({
+        ...resume,
+        personal_info: resume.personal_info || {}
+      })
       document.title = resume.title
     }
   }
 
   useEffect(() => {
-    {
-      loadingExistingResume()
-    }
-  })
+    loadingExistingResume()
+  }, [resumeId])
 
   return (
     <div className="">
