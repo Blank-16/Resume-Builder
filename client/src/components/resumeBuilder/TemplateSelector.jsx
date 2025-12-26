@@ -1,8 +1,9 @@
 import { Check, Layout } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 const TemplateSelector = ({ selectedTemplate, onChange }) => {
     const [isOpen, setIsOpen] = useState(false)
+    const containerRef = useRef(null)
 
     const templates = [
         {
@@ -28,8 +29,24 @@ const TemplateSelector = ({ selectedTemplate, onChange }) => {
         }
     ]
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (containerRef.current && !containerRef.current.contains(event.target)) {
+                setIsOpen(false)
+            }
+        }
+
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside)
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [isOpen])
+
     return (
-        <div className="relative">
+        <div className="relative" ref={containerRef}>
             <button onClick={() => setIsOpen(!isOpen)} className='flex items-center gap-1 text-sm text-blue-600 bg-gradient-to-br from-blue-50 to-blue-100 ring-blue-300 hover:ring transition-all px-3 py-2 rounded-lg'>
                 <Layout size={14} /> <span className='max-sm:hidden'>Template</span>
             </button>

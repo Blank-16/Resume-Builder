@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom'
 import { dummyResumeData } from '../assets/assets.js'
 import { Link } from 'react-router-dom'
 import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, FileText, FolderIcon, GraduationCap, Sparkles, User } from 'lucide-react'
-import PersonalInfoForm from '../components/PersonalInfoForm.jsx'
-import ResumePreview from '../components/ResumePreview.jsx'
-import TemplateSelector from '../components/TemplateSelector.jsx'
-
+import PersonalInfoForm from '../components/resumeBuilder/PersonalInfoForm.jsx'
+import ResumePreview from '../components/resumeBuilder/ResumePreview.jsx'
+import TemplateSelector from '../components/resumeBuilder/TemplateSelector.jsx'
+import ColorPicker from '../components/resumeBuilder/ColorPicker.jsx'
 
 const ResumeBuilder = () => {
 
@@ -94,6 +94,7 @@ const ResumeBuilder = () => {
           {/* left panel */}
           <div className='relative lg:col-span-5 rounded-lg overflow-hidden'>
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 pt-1 ">
+
               {/* progress bar using activeSectionIndex */}
               <hr className='absolute top-0 left-0 right-0 border-2 border-gray-200' />
               <hr className='absolute top-0 left-0 h-1 bg-linear-to-r from-green-500 to-green-600 border-none transition-all duration-2000'
@@ -102,13 +103,20 @@ const ResumeBuilder = () => {
               {/* section navigation */}
               <div className="flex justify-between items-center mb-6 border-b border-gray-300 py-1">
 
-                <div className='flex justify-between items-center mb-6 border-b border-gray-300 py-1'>
+                <div className='flex items-center gap-2'>
 
-                  <TemplateSelector 
+                  <TemplateSelector
                     selectedTemplate={resumeData.template}
                     onChange={(template) => setResumeData(prev => ({
                       ...prev,
                       template: template
+                    }))}
+                  />
+
+                  <ColorPicker selectedColor={resumeData.accent_color}
+                    onChange={(color) => setResumeData(prev => ({
+                      ...prev,
+                      accent_color: color
                     }))}
                   />
 
