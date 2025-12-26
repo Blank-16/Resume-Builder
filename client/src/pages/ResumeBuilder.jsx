@@ -4,6 +4,9 @@ import { dummyResumeData } from '../assets/assets.js'
 import { Link } from 'react-router-dom'
 import { ArrowLeftIcon, Briefcase, ChevronLeft, ChevronRight, FileText, FolderIcon, GraduationCap, Sparkles, User } from 'lucide-react'
 import PersonalInfoForm from '../components/PersonalInfoForm.jsx'
+import ResumePreview from '../components/ResumePreview.jsx'
+import TemplateSelector from '../components/TemplateSelector.jsx'
+
 
 const ResumeBuilder = () => {
 
@@ -77,9 +80,9 @@ const ResumeBuilder = () => {
   return (
     <div className="">
 
-      <div className="">
-        <Link to={`'/app`} className='inline-flex gap-2 items-center text-slate-500 hover:text-slate-700 transition-all'>
-          <ArrowLeftIcon size="4" /> Back to Dashboard
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <Link to={`/app`} className='inline-flex gap-2 items-center text-slate-500 hover:text-slate-700 transition-all'>
+          <ArrowLeftIcon className='size-4' /> Back to Dashboard
         </Link>
       </div>
 
@@ -97,7 +100,19 @@ const ResumeBuilder = () => {
 
               {/* section navigation */}
               <div className="flex justify-between items-center mb-6 border-b border-gray-300 py-1">
-                <div></div>
+
+                <div className='flex justify-between items-center mb-6 border-b border-gray-300 py-1'>
+
+                  <TemplateSelector 
+                    selectedTemplate={resumeData.template}
+                    onChange={(template) => setResumeData(prev => ({
+                      ...prev,
+                      template: template
+                    }))}
+                  />
+
+                </div>
+
                 <div className="flex items-center">
                   {activeSectionIndex !== 0 && (
                     <button className='flex items-center gap-1 p-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all' disabled={activeSectionIndex === 0} onClick={() => setActiveSectionIndex((prevIndex) => Math.max(prevIndex - 1, 0))}>
@@ -134,8 +149,13 @@ const ResumeBuilder = () => {
 
           {/* right panel */}
 
-          <div className="">
+          <div className="lg:col-span-7 max-lg:mt-6">
+            <div className="">
+              {/* buttons */}
+            </div>
 
+            {/* resume preview */}
+            <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} />
           </div>
 
         </div>
