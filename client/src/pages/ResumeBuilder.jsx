@@ -7,6 +7,7 @@ import PersonalInfoForm from '../components/resumeBuilder/PersonalInfoForm.jsx'
 import ResumePreview from '../components/resumeBuilder/ResumePreview.jsx'
 import TemplateSelector from '../components/resumeBuilder/TemplateSelector.jsx'
 import ColorPicker from '../components/resumeBuilder/ColorPicker.jsx'
+import ProfessionalSummaryForm from '../components/resumeBuilder/ProfessionalSummaryForm.jsx'
 
 const ResumeBuilder = () => {
 
@@ -15,6 +16,7 @@ const ResumeBuilder = () => {
     _id: '',
     title: '',
     personal_info: {},
+    professional_summary: "",
     experience: [],
     education: [],
     project: [],
@@ -148,6 +150,19 @@ const ResumeBuilder = () => {
                       removeBackground={removeBackground}
                       setRemoveBackground={setRemoveBackground}
                     />
+                    {
+                      activeSection.id === 'summary' && (
+                        <ProfessionalSummaryForm 
+                          data={resumeData.professional_summary}
+                          onChange={(data) => setResumeData(prev => (
+                            {
+                              ...prev, ProfessionalSummaryForm: data
+                            }
+                          ))}
+                          setResumeData={setResumeData}
+                        />
+                      )
+                    }
                   </div>
                 )}
               </div>
