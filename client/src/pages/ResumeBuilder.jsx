@@ -8,6 +8,9 @@ import ResumePreview from '../components/resumeBuilder/ResumePreview.jsx'
 import TemplateSelector from '../components/resumeBuilder/TemplateSelector.jsx'
 import ColorPicker from '../components/resumeBuilder/ColorPicker.jsx'
 import ProfessionalSummaryForm from '../components/resumeBuilder/ProfessionalSummaryForm.jsx'
+import EducationForm from '../components/resumeBuilder/EducationForm.jsx'
+
+
 import ExperienceForm from '../components/resumeBuilder/ExperienceForm.jsx'
 const ResumeBuilder = () => {
 
@@ -99,8 +102,8 @@ const ResumeBuilder = () => {
 
               {/* progress bar using activeSectionIndex */}
               <hr className='absolute top-0 left-0 right-0 border-2 border-gray-200' />
-              <hr className='absolute top-0 left-0 h-1 bg-linear-to-r from-green-500 to-green-600 border-none transition-all duration-2000'
-                style={{ width: `${activeSectionIndex * 100 / (sections.length - 1)}` }} />
+              <hr className='absolute top-0 left-0 h-1 bg-linear-to-r from-green-500 to-green-600 border-none transition-all duration-500'
+                style={{ width: `${((activeSectionIndex + 1) / sections.length) * 100}%` }} />
 
               {/* section navigation */}
               <div className="flex justify-between items-center mb-6 border-b border-gray-300 py-1">
@@ -182,6 +185,22 @@ const ResumeBuilder = () => {
                         }
                       ))}
                       setResumeData={setResumeData}
+                    />
+                  )
+                }
+
+                {/* Education */}
+
+                {
+                  activeSection.id === 'education' && (
+                    <EducationForm
+                      data={resumeData.education}
+                      onChange={(data) => setResumeData(prev => (
+                        {
+                          ...prev,
+                          education: data
+                        }
+                      ))}
                     />
                   )
                 }

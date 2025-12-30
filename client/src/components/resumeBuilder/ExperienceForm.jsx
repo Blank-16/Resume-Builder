@@ -8,6 +8,7 @@ const ExperienceForm = ({ data, onChange }) => {
         const newExperience = {
             company: "",
             position: "",
+            start_date: "",
             end_date: "",
             description: "",
             is_current: false
@@ -41,9 +42,9 @@ const ExperienceForm = ({ data, onChange }) => {
                         Add your job Experience
                     </p>
                 </div>
-                <button 
+                <button
                     onClick={addExperience}
-                    className='flex items-center gap-2 px-3 py-1 text-sm bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors disabled:opacity-50'
+                    className='flex items-center gap-2 px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50'
                 >
                     <Plus className='size-4' />
                     Add Experience
@@ -79,33 +80,27 @@ const ExperienceForm = ({ data, onChange }) => {
                                         onChange={(e) => updateExperience(index, "company", e.target.value)}
                                         placeholder='Company Name'
                                     />
-                                </div>
 
 
-                                <div className="grid md:grid-cols-2 gap-3">
                                     <input type="text" className="px-3 py-2 text-sm rounded-lg"
                                         value={experience.position || ""}
                                         onChange={(e) => updateExperience(index, "position", e.target.value)}
                                         placeholder='Job Title'
                                     />
-                                </div>
 
-                                <div className="grid md:grid-cols-2 gap-3">
-                                    <input type="text" className="px-3 py-2 text-sm rounded-lg"
+                                    <input type="month" className="px-3 py-2 text-sm rounded-lg"
                                         value={experience.start_date || ""}
                                         onChange={(e) => updateExperience(index, "start_date", e.target.value)}
                                     />
-                                </div>
 
-                                <div className="grid md:grid-cols-2 gap-3">
-                                    <input type="text" className="px-3 py-2 text-sm rounded-lg disabled:bg-gray-100"
+                                    <input type="month" className="px-3 py-2 text-sm rounded-lg disabled:bg-gray-100"
                                         value={experience.end_date || ""}
                                         onChange={(e) => updateExperience(index, "end_date", e.target.value)}
                                         disabled={experience.is_current}
                                     />
                                 </div>
 
-                                <label>
+                                <label className='flex items-center gap-2'>
                                     <input type="checkbox" checked={experience.is_current || false} onChange={(e) => updateExperience(index, "is_current", e.target.checked ? true : false)}
                                         className='roudned border-gray-300 text-blue-600 focus:ring-blue-500'
                                     />
