@@ -28,7 +28,7 @@ const ProfessionalSummaryForm = ({ data, onChange, setResumeData }) => {
                     placeholder='Write a compelling professional summary that highlights your key strengths and carrer objectives....'
                 />
                 <p className="text-xs text-gray-500 max-w-4/5 mx-auto text-center">
-                    Typ: Keep it concise (3-4 sentences) and focus on your most relevant achivements and skills.
+                    Tip: Keep it concise (3-4 sentences) and focus on your most relevant achivements and skills.
                 </p>
 
             </div>

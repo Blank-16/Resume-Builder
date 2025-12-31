@@ -12,6 +12,7 @@ import EducationForm from '../components/resumeBuilder/EducationForm.jsx'
 
 
 import ExperienceForm from '../components/resumeBuilder/ExperienceForm.jsx'
+import ProjectForm from '../components/resumeBuilder/ProjectForm.jsx'
 const ResumeBuilder = () => {
 
   const { resumeId } = useParams()
@@ -205,6 +206,21 @@ const ResumeBuilder = () => {
                   )
                 }
 
+                {/* Projects */}
+
+                {
+                  activeSection.id === 'projects' && (
+                    <ProjectForm
+                      data={resumeData.project}
+                      onChange={(data) => setResumeData(prev => (
+                        {
+                          ...prev,
+                          project: data
+                        }
+                      ))}
+                    />
+                  )
+                }
 
               </div>
 
