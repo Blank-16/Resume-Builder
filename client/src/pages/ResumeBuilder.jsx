@@ -13,6 +13,7 @@ import EducationForm from '../components/resumeBuilder/EducationForm.jsx'
 
 import ExperienceForm from '../components/resumeBuilder/ExperienceForm.jsx'
 import ProjectForm from '../components/resumeBuilder/ProjectForm.jsx'
+import SkillsForm from '../components/resumeBuilder/SkillsForm.jsx'
 const ResumeBuilder = () => {
 
   const { resumeId } = useParams()
@@ -222,8 +223,30 @@ const ResumeBuilder = () => {
                   )
                 }
 
+                {/* Skills */}
+
+
+                {
+                  activeSection.id === 'skills' && (
+                    <SkillsForm
+                      data={resumeData.skills}
+                      onChange={(data) => setResumeData(prev => (
+                        {
+                          ...prev,
+                          skills: data
+                        }
+                      ))}
+                    />
+                  )
+                }
+
               </div>
 
+              <button className='bg-linear-to-br from-green-100 to-green-200 ring-green-300 ring hover:ring-green-400 transition-all rounded-md px-6 py-2 text-sm'
+              
+              >
+                Save Changes
+              </button>
             </div>
 
           </div>
