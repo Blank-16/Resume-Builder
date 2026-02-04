@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react'
 import { Home, Dashboard, Layout, Login, Preview, Resumebuilder } from './pages/index'
 import { useDispatch } from 'react-redux'
 import api from './configs/api'
@@ -30,6 +31,10 @@ function App() {
       console.log(error.message)
     }
   }
+  useEffect(() => {
+  getUserData()
+}, [])
+
   return (
     <>
       <Routes>
