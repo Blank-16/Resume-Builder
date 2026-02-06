@@ -4,6 +4,8 @@ import { Home, Dashboard, Layout, Login, Preview, Resumebuilder } from './pages/
 import { useDispatch } from 'react-redux'
 import api from './configs/api'
 import { login, setLoading } from './app/features/authSlice'
+import { Toaster } from 'react-hot-toast'
+
 
 function App() {
 
@@ -32,11 +34,12 @@ function App() {
     }
   }
   useEffect(() => {
-  getUserData()
-}, [])
+    getUserData()
+  }, [])
 
   return (
     <>
+      <Toaster />
       <Routes>
         <Route path='/' element={<Home />} />
 

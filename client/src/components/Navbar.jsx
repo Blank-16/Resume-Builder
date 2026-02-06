@@ -1,12 +1,18 @@
 import {Link, useNavigate} from 'react-router-dom'
 import logoWhite from "../assets/logoWhite.png"
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../app/features/authSlice'
 
 const Navbar = () => {
-    const user = { name: 'John Doe' }
+
+    const {user} = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+
     const navigate = useNavigate()
 
     const logoutUser = () => {
         navigate('/')
+        dispatch(logout())
     }
 
     return (

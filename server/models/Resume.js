@@ -16,7 +16,7 @@ const ResumeSchema = new mongoose.Schema({
         location: { type: String, default: '' },
         linkedin: { type: String, default: '' },
         website: { type: String, default: '' },
-        // github: { type: String, default: '' }
+        github: { type: String, default: '' }
     },
     experience: [
         {
