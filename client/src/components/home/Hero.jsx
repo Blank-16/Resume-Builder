@@ -9,11 +9,11 @@ const Hero = () => {
     const [menuOpen, setMenuOpen] = React.useState(false);
 
     const logos = [
-        'https://saasly.prebuiltui.com/assets/companies-logo/instagram.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/framer.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/microsoft.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/huawei.svg',
-        'https://saasly.prebuiltui.com/assets/companies-logo/walmart.svg',
+        'https://imgs.search.brave.com/M4cRbpRmQLuhoPMjgDumka9sOD5G6S6D_20jbm4rch0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c3ZncmVwby5jb20v/c2hvdy80NTIyMzEv/aW5zdGFncmFtLnN2/Zw',
+        'https://imgs.search.brave.com/duzVmRQbhAaEvxG0TQSSmUXAxOI3MbL5QiIrx5Rkw2w/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcmV2/aWV3LnJlZGQuaXQv/c3ZnLWdyYXBoaWNz/LWFyZS1kaXNwbGF5/ZWQtb2ZmLXYwLW1u/N3MzZHl3bHhlYzEu/cG5nP3dpZHRoPTEx/OTImZm9ybWF0PXBu/ZyZhdXRvPXdlYnAm/cz0yNDY5YWQzMTQ1/MjQzZjljNDg3MzM4/YmJmZDE0YjY4MmQx/ZGVlMzIz',
+        'https://imgs.search.brave.com/kvcpOW1-jc8JccLcEhAVkTgfujJdQJeUpSTyb42mUsw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c3ZncmVwby5jb20v/c2hvdy80NTIwNjIv/bWljcm9zb2Z0LnN2/Zw',
+        'https://imgs.search.brave.com/3f-lwluaIn3WbVfdzTRkBG28X4iBRIrtZAIrax2Xt20/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dmVjdG9ybG9nby56/b25lL2xvZ29zL2Fw/cGxlL2FwcGxlLXRp/bGUuc3Zn',
+        'https://imgs.search.brave.com/Akt9XLKQaOhMiaAcS6y06CVXh_zAPHdVjHj1az3_mPM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c3ZncmVwby5jb20v/c2hvdy8zMDMxMDgv/Z29vZ2xlLWljb24t/bG9nby5zdmc',
     ]
 
     return (
