@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true }
 }, { timestamps: true })
 
-UserSchema.methods.comparePassword = (password) => {
+UserSchema.methods.comparePassword = function (password) {
     return bcrypt.compareSync(password, this.password)
 }
 

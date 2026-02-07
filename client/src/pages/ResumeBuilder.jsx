@@ -345,15 +345,12 @@ const ResumeBuilder = () => {
                 </button>
               </div>
             </div>
+
+            {/* resume preview */}
+            <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} />
           </div>
-
-          {/* resume preview */}
-          <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} />
-
         </div>
-
       </div>
-
     </div>
   )
 }
