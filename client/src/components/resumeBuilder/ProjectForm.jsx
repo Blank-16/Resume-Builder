@@ -1,4 +1,4 @@
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, GraduationCap } from 'lucide-react';
 import React from 'react'
 
 const ProjectForm = ({ data, onChange }) => {

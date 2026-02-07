@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import api from '../../configs/api'
 import { useInRouterContext } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 const ExperienceForm = ({ data, onChange }) => {
 
@@ -46,8 +47,8 @@ const ExperienceForm = ({ data, onChange }) => {
         const prompt = `Enhance this job description ${experience.description} for the position of ${experience.position} at ${experience.company}`
 
         try {
-            const { data } = await api.post(`/api/ai/enhance-job-description`, { useContent: prompt }, { headers: { Authorization: token } })
-            updateExperience(index, "description", data.enhancedContent)
+            const { data } = await api.post(`/api/ai/enhance-job-description`, { userContent: prompt }, { headers: { Authorization: token } })
+            updateExperience(index, "description", data.enhanceContent)
         } catch (error) {
             toast.error(error.message)
         } finally {
