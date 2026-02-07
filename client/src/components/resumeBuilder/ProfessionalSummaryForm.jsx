@@ -16,7 +16,7 @@ const ProfessionalSummaryForm = ({ data, onChange, setResumeData }) => {
             const response = await api.post(`/api/ai/enhance-pro-summary`, {
                 userContent: prompt
             }, { headers: { Authorization: token } })
-            setResumeData(prev => ({ ...prev, professional_summary: response.data.enhancedContent }))
+            setResumeData(prev => ({ ...prev, professional_summary: response.data.enhanceContent }))
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message)
         } finally {
