@@ -1,11 +1,11 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft, Briefcase, Download, Eye, EyeOff, FileText,
   FolderOpen, GraduationCap, Save, Share2, Sparkles, User,
   Award, ChevronLeft, ChevronRight,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useResumeBuilder }  from "@/features/resume/hooks/useResumeBuilder";
 import { PersonalInfoForm }  from "@/features/resume/components/PersonalInfoForm";
 import { SummaryForm }       from "@/features/resume/components/SummaryForm";
@@ -32,11 +32,19 @@ const SECTIONS: Section[] = [
 ];
 
 export function ResumeBuilderPage() {
-  const { id } = useParams<{ id: string }>();
-  const { resume, updateField, save, isSaving, isLoading, toggleVisibility } =
+  const { id }   = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  // All hooks must be called unconditionally — guard happens via useEffect
+  const { resume, updateField, save, isSaving, isLoading, isDirty, toggleVisibility } =
     useResumeBuilder({ resumeId: id ?? "" });
   const [activeIdx,    setActiveIdx]    = useState(0);
   const [showSettings, setShowSettings] = useState(false);
+
+  // Redirect if no id — done in effect, not before hooks
+  useEffect(() => {
+    if (!id) navigate("/dashboard", { replace: true });
+  }, [id, navigate]);
 
   const progress = ((activeIdx + 1) / SECTIONS.length) * 100;
   const active   = SECTIONS[activeIdx];
@@ -46,6 +54,8 @@ export function ResumeBuilderPage() {
     if (navigator.share) void navigator.share({ url, title: resume.title });
     else { void navigator.clipboard.writeText(url); toast.success("Link copied"); }
   }
+
+  if (!id) return null;
 
   if (isLoading) {
     return (
@@ -93,6 +103,12 @@ export function ResumeBuilderPage() {
             className="text-sm font-semibold bg-transparent border-none outline-none w-48 truncate"
             style={{ color: "var(--text-primary)" }}
           />
+          {/* Unsaved indicator */}
+          {isDirty && (
+            <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+              • Unsaved
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -128,7 +144,7 @@ export function ResumeBuilderPage() {
               void toast.promise(save(), {
                 loading: "Saving…",
                 success: "Saved!",
-                error: "Failed to save",
+                error:   "Failed to save",
               })
             }
             className="btn btn-primary flex items-center gap-1.5 text-xs px-4 py-1.5"
@@ -143,8 +159,6 @@ export function ResumeBuilderPage() {
 
         {/* ── Left: editor panel ── */}
         <div className="print:hidden space-y-4">
-
-          {/* Section editor card */}
           <div
             className="overflow-hidden"
             style={{
@@ -192,7 +206,7 @@ export function ResumeBuilderPage() {
               {active?.id === "skills"         && <SkillsForm        data={resume.skills}              onChange={(v) => updateField("skills", v)} />}
             </div>
 
-            {/* Prev / Next footer */}
+            {/* Prev / Next */}
             <div
               className="flex items-center justify-between px-5 py-3"
               style={{ borderTop: "1px solid var(--border)", background: "var(--bg-subtle)" }}
@@ -219,7 +233,7 @@ export function ResumeBuilderPage() {
             </div>
           </div>
 
-          {/* Style settings accordion */}
+          {/* Style settings */}
           <div
             className="overflow-hidden"
             style={{
@@ -229,7 +243,6 @@ export function ResumeBuilderPage() {
               boxShadow:    "var(--shadow-sm)",
             }}
           >
-            {/* settings-btn class handles hover via CSS */}
             <button
               type="button"
               onClick={() => setShowSettings((s) => !s)}

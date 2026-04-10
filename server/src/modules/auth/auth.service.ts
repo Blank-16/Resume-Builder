@@ -4,13 +4,20 @@ import { env } from "../../config/env.js";
 import type { RegisterInput, LoginInput } from "./auth.validation.js";
 import type { User, AuthPayload } from "../../types/shared.js";
 
+// Typed error so errorHandler maps it to the correct HTTP status
+class HttpError extends Error {
+  constructor(message: string, public statusCode: number) {
+    super(message);
+    this.name = "HttpError";
+  }
+}
+
 function signToken(userId: string): string {
   return jwt.sign({ userId }, env.jwtKey, {
     expiresIn: env.jwtExpiresIn as jwt.SignOptions["expiresIn"],
   });
 }
 
-// Accept unknown so the caller never needs a cast — we extract only what we need.
 function toUser(doc: {
   _id: unknown;
   name: string;
@@ -18,10 +25,8 @@ function toUser(doc: {
   createdAt: unknown;
   updatedAt: unknown;
 }): User {
-  const toIso = (v: unknown): string => {
-    if (v instanceof Date) return v.toISOString();
-    return String(v ?? "");
-  };
+  const toIso = (v: unknown): string =>
+    v instanceof Date ? v.toISOString() : String(v ?? "");
   return {
     _id:       String(doc._id),
     name:      doc.name,
@@ -34,7 +39,7 @@ function toUser(doc: {
 export class AuthService {
   async register(input: RegisterInput): Promise<AuthPayload> {
     const existing = await UserModel.findOne({ email: input.email });
-    if (existing) throw new Error("Email already in use");
+    if (existing) throw new HttpError("Email already in use", 409);
 
     const doc   = await UserModel.create(input);
     const token = signToken(String(doc._id));
@@ -43,10 +48,11 @@ export class AuthService {
 
   async login(input: LoginInput): Promise<AuthPayload> {
     const doc = await UserModel.findOne({ email: input.email }).select("+password");
-    if (!doc) throw new Error("Invalid email or password");
+    // Identical message for both cases — prevents user enumeration
+    if (!doc) throw new HttpError("Invalid email or password", 401);
 
     const valid = await doc.comparePassword(input.password);
-    if (!valid) throw new Error("Invalid email or password");
+    if (!valid) throw new HttpError("Invalid email or password", 401);
 
     const token = signToken(String(doc._id));
     return { token, user: toUser(doc) };
@@ -55,7 +61,6 @@ export class AuthService {
   async getProfile(userId: string): Promise<User | null> {
     const doc = await UserModel.findById(userId).lean();
     if (!doc) return null;
-    // lean() returns a plain object — cast through unknown to satisfy toUser
     return toUser(doc as unknown as Parameters<typeof toUser>[0]);
   }
 }
