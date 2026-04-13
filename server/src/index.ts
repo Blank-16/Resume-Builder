@@ -4,8 +4,10 @@ import { env } from "./config/env.js";
 import { connectDB } from "./config/db.js";
 import { authRouter } from "./modules/auth/auth.route.js";
 import { resumeRouter } from "./modules/resume/resume.route.js";
+import { aiRouter } from "./modules/ai/ai.route.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { requestLogger } from "./middleware/requestLogger.js";
+import { apiLimiter } from "./middleware/rateLimiter.js";
 
 const app = express();
 
@@ -17,20 +19,17 @@ app.use((_req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Referrer-Policy",         "strict-origin-when-cross-origin");
   res.setHeader("Permissions-Policy",      "camera=(), microphone=(), geolocation=()");
   if (!env.isDev) {
-    // Only send HSTS in production — localhost does not support HTTPS
     res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   }
   next();
 });
 
-/* ── CORS — allow only the configured client origin ── */
+/* ── CORS ── */
 app.use(
   cors({
     origin(origin, cb) {
-      // Allow server-to-server / curl requests (no origin header)
       if (!origin) return cb(null, true);
       if (origin === env.clientUrl) return cb(null, true);
-      // Return a proper error message; errorHandler converts this to JSON
       const err = new Error(`CORS: origin '${origin}' is not allowed`) as Error & { statusCode: number };
       err.statusCode = 403;
       cb(err);
@@ -43,6 +42,7 @@ app.use(
 
 app.use(express.json({ limit: "1mb" }));
 app.use(requestLogger);
+app.use("/api", apiLimiter);
 
 /* ── Routes ── */
 app.get("/health", (_req, res) => {
@@ -51,6 +51,7 @@ app.get("/health", (_req, res) => {
 
 app.use("/api/auth",    authRouter);
 app.use("/api/resumes", resumeRouter);
+app.use("/api/ai",      aiRouter);
 
 /* ── Global error handler (must be last) ── */
 app.use(errorHandler);

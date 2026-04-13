@@ -1,12 +1,11 @@
 import type { Request, Response } from "express";
 import { AuthService } from "./auth.service.js";
-import { registerSchema, loginSchema } from "./auth.validation.js";
+import { registerSchema, loginSchema, refreshSchema } from "./auth.validation.js";
 import type { ApiResponse, AuthPayload, User } from "../../types/shared.js";
 
 const authService = new AuthService();
 
-// Validation helper — keeps controllers free of repeated safeParse boilerplate
-function validateBody<T>(
+function validate<T>(
   schema: { safeParse: (v: unknown) => { success: true; data: T } | { success: false; error: { flatten: () => { fieldErrors: Record<string, string[]> } } } },
   body: unknown,
   res: Response
@@ -19,21 +18,33 @@ function validateBody<T>(
   return parsed.data;
 }
 
-// asyncHandler forwards thrown errors to errorHandler — no try/catch needed here
 export async function register(req: Request, res: Response): Promise<void> {
-  const input = validateBody(registerSchema, req.body, res);
+  const input = validate(registerSchema, req.body, res);
   if (!input) return;
-
   const payload = await authService.register(input);
   res.status(201).json({ message: "Account created", data: payload } satisfies ApiResponse<AuthPayload>);
 }
 
 export async function login(req: Request, res: Response): Promise<void> {
-  const input = validateBody(loginSchema, req.body, res);
+  const input = validate(loginSchema, req.body, res);
   if (!input) return;
-
   const payload = await authService.login(input);
   res.json({ message: "Login successful", data: payload } satisfies ApiResponse<AuthPayload>);
+}
+
+export async function refresh(req: Request, res: Response): Promise<void> {
+  const input = validate(refreshSchema, req.body, res);
+  if (!input) return;
+  const result = await authService.refresh(input);
+  res.json({ message: "Token refreshed", data: result } satisfies ApiResponse<Pick<AuthPayload, "token">>);
+}
+
+export async function logoutHandler(req: Request, res: Response): Promise<void> {
+  const { refreshToken } = req.body as { refreshToken?: string };
+  if (refreshToken && req.userId) {
+    await authService.logout(req.userId, refreshToken);
+  }
+  res.json({ message: "Logged out" } satisfies ApiResponse);
 }
 
 export async function getMe(req: Request, res: Response): Promise<void> {

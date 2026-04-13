@@ -198,7 +198,7 @@ export function ResumeBuilderPage() {
             {/* Active form */}
             <div className="p-5">
               {active?.id === "personal"       && <PersonalInfoForm  data={resume.personalInfo}        onChange={(v) => updateField("personalInfo", v)} />}
-              {active?.id === "summary"        && <SummaryForm       data={resume.professionalSummary} onChange={(v) => updateField("professionalSummary", v)} />}
+              {active?.id === "summary"        && <SummaryForm       data={resume.professionalSummary} onChange={(v) => updateField("professionalSummary", v)} experience={resume.experience} skills={resume.skills} />}
               {active?.id === "experience"     && <ExperienceForm    data={resume.experience}          onChange={(v) => updateField("experience", v)} />}
               {active?.id === "education"      && <EducationForm     data={resume.education}           onChange={(v) => updateField("education", v)} />}
               {active?.id === "projects"       && <ProjectForm       data={resume.projects}            onChange={(v) => updateField("projects", v)} />}

@@ -10,11 +10,12 @@ export function LoginPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [params]  = useSearchParams();
+  const [params] = useSearchParams();
 
-  const [isReg, setIsReg]         = useState(params.get("mode") === "register");
+  const [isReg,      setIsReg]      = useState(params.get("mode") === "register");
   const [submitting, setSubmitting] = useState(false);
-  const [form, setForm]            = useState({ name: "", email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
 
   const from =
     (location.state as { from?: { pathname: string } } | null)?.from?.pathname ??
@@ -28,21 +29,18 @@ export function LoginPage() {
     setSubmitting(true);
     try {
       const { data } = isReg
-        ? await authApi.register(form)
-        : await authApi.login({ email: form.email, password: form.password });
+        ? await authApi.register({ ...form, rememberMe })
+        : await authApi.login({ email: form.email, password: form.password, rememberMe });
 
       if (data.data) {
-        // setCredentials now also sets loading=false internally
+        // Store both tokens; setCredentials also sets loading=false
         dispatch(setCredentials(data.data));
         navigate(from, { replace: true });
       }
     } catch (err: unknown) {
       toast.error(
-        err instanceof Error
-          ? err.message
-          : isReg
-          ? "Registration failed"
-          : "Login failed"
+        err instanceof Error ? err.message
+          : isReg ? "Registration failed" : "Login failed"
       );
     } finally {
       setSubmitting(false);
@@ -79,48 +77,52 @@ export function LoginPage() {
           </p>
         </div>
 
-        {/* Form card */}
+        {/* Card */}
         <div className="card-raised p-6 anim-fade-up delay-2">
           <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
             {isReg && (
               <div>
                 <label className="label">Name</label>
-                <input
-                  type="text"
-                  required
-                  autoComplete="name"
-                  value={form.name}
-                  onChange={(e) => set("name", e.target.value)}
-                  placeholder="Jane Smith"
-                  className="input"
-                />
+                <input type="text" required autoComplete="name"
+                  value={form.name} onChange={(e) => set("name", e.target.value)}
+                  placeholder="Jane Smith" className="input" />
               </div>
             )}
             <div>
               <label className="label">Email</label>
-              <input
-                type="email"
-                required
-                autoComplete="email"
-                value={form.email}
-                onChange={(e) => set("email", e.target.value)}
-                placeholder="jane@example.com"
-                className="input"
-              />
+              <input type="email" required autoComplete="email"
+                value={form.email} onChange={(e) => set("email", e.target.value)}
+                placeholder="jane@example.com" className="input" />
             </div>
             <div>
               <label className="label">Password</label>
               <input
-                type="password"
-                required
-                minLength={8}
+                type="password" required minLength={8}
                 autoComplete={isReg ? "new-password" : "current-password"}
-                value={form.password}
-                onChange={(e) => set("password", e.target.value)}
+                value={form.password} onChange={(e) => set("password", e.target.value)}
                 placeholder={isReg ? "Min. 8 characters" : "••••••••"}
                 className="input"
               />
             </div>
+
+            {/* Remember me — only shown on login */}
+            {!isReg && (
+              <label
+                className="flex items-center gap-2.5 text-xs cursor-pointer select-none"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="rounded"
+                />
+                Remember me for 7 days
+                <span className="text-[10px] ml-auto" style={{ color: "var(--text-muted)" }}>
+                  (default: 24 h)
+                </span>
+              </label>
+            )}
 
             <button
               type="submit"
@@ -131,11 +133,7 @@ export function LoginPage() {
                 <span className="flex items-center gap-2">
                   <span className="spinner" /> Please wait…
                 </span>
-              ) : isReg ? (
-                "Create Account"
-              ) : (
-                "Sign In"
-              )}
+              ) : isReg ? "Create Account" : "Sign In"}
             </button>
           </form>
 

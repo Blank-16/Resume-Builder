@@ -49,6 +49,15 @@ export interface CertificationEntry {
 
 export type TemplateId = "classic" | "modern" | "minimal" | "executive";
 
+// A point-in-time snapshot of resume content for version history
+export interface ResumeSnapshot {
+  snapshotId: string;
+  savedAt: string;
+  title: string;
+  // Full content blob stored as JSON string for compact storage
+  content: string;
+}
+
 export interface Resume {
   _id: string;
   userId: string;
@@ -63,6 +72,7 @@ export interface Resume {
   projects: ProjectEntry[];
   certifications: CertificationEntry[];
   skills: string[];
+  versions: ResumeSnapshot[];
   createdAt: string;
   updatedAt: string;
 }
@@ -70,7 +80,7 @@ export interface Resume {
 export type ResumeCreatePayload = Pick<Resume, "title">;
 
 export type ResumeUpdatePayload = Partial<
-  Omit<Resume, "_id" | "userId" | "createdAt" | "updatedAt">
+  Omit<Resume, "_id" | "userId" | "createdAt" | "updatedAt" | "versions">
 >;
 
 export interface User {
@@ -82,8 +92,9 @@ export interface User {
 }
 
 export interface AuthPayload {
-  token: string;
-  user: User;
+  token:        string;
+  refreshToken: string;
+  user:         User;
 }
 
 export interface ApiResponse<T = undefined> {
@@ -104,4 +115,20 @@ export interface TemplateDefinition {
   id: TemplateId;
   name: string;
   description: string;
+}
+
+// AI feature types
+export interface AISuggestRequest {
+  field: "summary" | "experience_description";
+  context: {
+    currentText?: string;
+    position?: string;
+    company?: string;
+    existingExperience?: Array<{ position: string; company: string; description: string }>;
+    skills?: string[];
+  };
+}
+
+export interface AISuggestResponse {
+  suggestion: string;
 }
