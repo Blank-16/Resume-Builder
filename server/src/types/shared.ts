@@ -47,7 +47,7 @@ export interface CertificationEntry {
   url: string;
 }
 
-export type TemplateId = "classic" | "modern" | "minimal" | "executive";
+export type TemplateId = "classic" | "modern" | "minimal" | "executive" | "home_college" | "general_template";
 
 // A point-in-time snapshot of resume content for version history
 export interface ResumeSnapshot {

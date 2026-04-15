@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const templateIdSchema = z.enum(["classic", "modern", "minimal", "executive"]);
+const templateIdSchema = z.enum(["classic", "modern", "minimal", "executive", "home_college", "general_template"]);
 
 // Allow empty string OR a valid URL — used for optional link fields
 const urlOrEmpty = z.string().refine(

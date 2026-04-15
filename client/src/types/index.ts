@@ -1,6 +1,6 @@
 // All shared types used throughout the client
 
-export type TemplateId = "classic" | "modern" | "minimal" | "executive";
+export type TemplateId = "classic" | "modern" | "minimal" | "executive" | "home_college" | "general_template";
 
 export interface PersonalInfo {
   fullName: string;
