@@ -5,6 +5,7 @@ import { connectDB } from "./config/db.js";
 import { authRouter } from "./modules/auth/auth.route.js";
 import { resumeRouter } from "./modules/resume/resume.route.js";
 import { aiRouter } from "./modules/ai/ai.route.js";
+import { userRouter } from "./modules/user/user.route.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { requestLogger } from "./middleware/requestLogger.js";
 import { apiLimiter } from "./middleware/rateLimiter.js";
@@ -52,6 +53,7 @@ app.get("/health", (_req, res) => {
 app.use("/api/auth",    authRouter);
 app.use("/api/resumes", resumeRouter);
 app.use("/api/ai",      aiRouter);
+app.use("/api/users",   userRouter);
 
 /* ── Global error handler (must be last) ── */
 app.use(errorHandler);

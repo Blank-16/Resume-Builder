@@ -12,6 +12,7 @@ import { LoginPage }         from "@/features/resume/LoginPage";
 import { DashboardPage }     from "@/features/resume/DashboardPage";
 import { ResumeBuilderPage } from "@/features/resume/ResumeBuilderPage";
 import { PublicPreviewPage } from "@/features/resume/PublicPreviewPage";
+import { SettingsPage }      from "@/features/resume/SettingsPage";
 
 // How many ms before access token expiry to trigger a silent refresh.
 // Access tokens last 15 min (900_000 ms) — refresh 2 min early.
@@ -132,6 +133,9 @@ export default function App() {
           <ProtectedRoute><ResumeBuilderPage /></ProtectedRoute>
         } />
 
+        <Route path="/settings" element={
+          <ProtectedRoute><SettingsPage /></ProtectedRoute>
+        } />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

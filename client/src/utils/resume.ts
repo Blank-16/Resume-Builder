@@ -47,7 +47,7 @@ export function createEmptyResume(): Resume {
     projects:            [],
     certifications:      [],
     skills:              [],
-    versions:            [],   
+    versions:            [],   // added — matches Resume type
     createdAt:           "",
     updatedAt:           "",
   };

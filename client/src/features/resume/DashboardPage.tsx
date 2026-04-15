@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FilePlus, Trash2, Edit3, Clock, FileText,
-  LogOut, Copy, Check, X, MoreHorizontal,
+  LogOut, Copy, Check, X, MoreHorizontal, Settings,
 } from "lucide-react";
 import { resumeApi } from "@/services/api";
 import { useAppSelector, useAppDispatch } from "@/hooks/useAppStore";
@@ -174,6 +174,9 @@ export function DashboardPage() {
             <FilePlus className="size-4" />
             {creating ? "Creating…" : "New Resume"}
           </button>
+          <Link to="/settings" title="Settings" className="btn btn-surface p-2">
+            <Settings className="size-4" />
+          </Link>
           <button type="button" title="Sign out"
             onClick={() => { dispatch(logout()); navigate("/"); }}
             className="btn btn-surface p-2">

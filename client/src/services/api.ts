@@ -71,5 +71,15 @@ export const aiApi = {
     api.post<ApiResponse<AISuggestResponse>>("/api/ai/suggest", body),
 };
 
+
+export const userApi = {
+  updateProfile:  (body: { name?: string; email?: string }) =>
+    api.put<ApiResponse<User>>("/api/users/me", body),
+  changePassword: (body: { currentPassword: string; newPassword: string }) =>
+    api.put<ApiResponse>("/api/users/me/password", body),
+  deleteAccount:  (body: { password: string }) =>
+    api.delete<ApiResponse>("/api/users/me", { data: body }),
+};
+
 export default api;
 export type { ResumeSnapshot };
