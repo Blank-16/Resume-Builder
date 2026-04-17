@@ -6,6 +6,7 @@ import { setUser, logout } from "@/store/features/authSlice";
 import { userApi } from "@/services/api";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import toast from "react-hot-toast";
+import { ThemeSwitcher } from "@/components/ui/ThemeSwitcher";
 
 export function SettingsPage() {
   const dispatch = useAppDispatch();
@@ -94,6 +95,7 @@ export function SettingsPage() {
         position: "sticky", top: 0, zIndex: 40,
       }}>
         <div className="flex items-center gap-3">
+          <ThemeSwitcher />
           <Link to="/dashboard" className="btn btn-surface flex items-center gap-1.5 text-xs px-3 py-1.5">
             <ArrowLeft className="size-3.5" /> Dashboard
           </Link>

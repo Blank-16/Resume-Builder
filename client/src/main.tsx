@@ -2,14 +2,15 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "@/store";
+import { applyStoredTheme } from "@/store/features/themeSlice";
 import App from "./App";
 import "./index.css";
 
-const root = document.getElementById("root");
+// Apply theme before first paint to prevent flash
+applyStoredTheme();
 
-if (!root) {
-  throw new Error("Root element #root not found in index.html");
-}
+const root = document.getElementById("root");
+if (!root) throw new Error("Root element #root not found in index.html");
 
 createRoot(root).render(
   <StrictMode>

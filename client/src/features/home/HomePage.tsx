@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "@/hooks/useAppStore";
 import {
   Sparkles, Shield, Zap, ArrowRight, CheckCircle2,
-  LayoutTemplate, FileText, Star,
+  LayoutTemplate, FileText,
 } from "lucide-react";
+import { ThemeSwitcher } from "@/components/ui/ThemeSwitcher";
 
 const FEATURES = [
   { icon: Sparkles,       title: "AI Writing",        desc: "Generate ATS-optimised bullet points and summaries powered by any OpenAI-compatible model." },
@@ -41,6 +42,7 @@ export function HomePage() {
           <span className="font-bold text-sm tracking-tight">ResumeBuilder</span>
         </div>
         <div className="flex items-center gap-3">
+          <ThemeSwitcher />
           {token ? (
             <Link to="/dashboard" className="btn btn-primary px-4 py-2 text-xs">Dashboard</Link>
           ) : (
@@ -107,7 +109,7 @@ export function HomePage() {
               ))}
             </div>
             <div className="flex items-center gap-1 ml-1">
-              {[1,2,3,4,5].map(i => <Star key={i} className="size-3 fill-current" style={{ color: "#fbbf24" }} />)}
+              <span style={{ color: '#fbbf24', fontSize: '0.75rem', letterSpacing: '2px' }}>★★★★★</span>
             </div>
             <span className="text-xs" style={{ color: "var(--text-muted)" }}>
               Used by thousands of job seekers

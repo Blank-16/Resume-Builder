@@ -6,7 +6,8 @@ import {
   setCredentials, setAccessToken, setLoading, logout,
 } from "@/store/features/authSlice";
 import { authApi } from "@/services/api";
-import { ProtectedRoute } from "@/components/ui/ProtectedRoute";
+import { ProtectedRoute }  from "@/components/ui/ProtectedRoute";
+import { ThemeProvider }   from "@/components/ui/ThemeProvider";
 import { HomePage }          from "@/features/home/HomePage";
 import { LoginPage }         from "@/features/resume/LoginPage";
 import { DashboardPage }     from "@/features/resume/DashboardPage";
@@ -105,6 +106,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AppBootstrap />
+      <ThemeProvider />
       <Toaster
         position="top-right"
         toastOptions={{

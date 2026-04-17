@@ -21,6 +21,7 @@ import { CompletionScore }         from "@/features/resume/components/Completion
 import { ATSScorePanel }           from "@/features/resume/components/ATSScorePanel";
 import { VersionHistoryDrawer }    from "@/features/resume/components/VersionHistoryDrawer";
 import toast from "react-hot-toast";
+import { ThemeSwitcher } from "@/components/ui/ThemeSwitcher";
 
 interface Section { id: string; label: string; icon: LucideIcon; }
 
@@ -203,6 +204,7 @@ export function ResumeBuilderPage() {
         </div>
 
         <div className="flex items-center gap-1.5">
+          <ThemeSwitcher />
           <button type="button" onClick={() => setShowVersions(true)}
             title="Version history"
             className="btn btn-surface p-2">
