@@ -118,10 +118,20 @@ export function VersionHistoryDrawer({ resume, onClose, onRestore }: Props) {
               {sorted.map((snap, i) => (
                 <div
                   key={snap.snapshotId}
-                  className="rounded-xl p-3.5"
+                  className="rounded-xl p-3.5 anim-fade-up"
                   style={{
-                    background:  "var(--surface-raised)",
-                    border:      "1px solid var(--border)",
+                    background:     "var(--surface-raised)",
+                    border:         "1px solid var(--border)",
+                    animationDelay: `${i * 40}ms`,
+                    transition:     "border-color var(--t-fast), box-shadow var(--t-fast)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.borderColor = "color-mix(in oklch, var(--accent) 35%, var(--border))";
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = "var(--shadow-sm)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.borderColor = "";
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = "";
                   }}
                 >
                   <div className="flex items-start justify-between gap-2">

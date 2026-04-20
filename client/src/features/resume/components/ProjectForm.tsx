@@ -1,5 +1,5 @@
-import { PlusCircle, Trash2, ChevronDown, ChevronUp, X } from "lucide-react";
-import { useState } from "react";
+import { PlusCircle, Trash2, ChevronDown, X } from "lucide-react";
+import { useState, useRef } from "react";
 import { generateId } from "@/utils/resume";
 import type { ProjectEntry } from "@/types";
 
@@ -12,6 +12,7 @@ function empty(): ProjectEntry {
 export function ProjectForm({ data, onChange }: Props) {
   const [openId, setOpenId]    = useState<string | null>(data[0]?.id ?? null);
   const [techIn, setTechIn]    = useState<Record<string, string>>({});
+  const justAddedTech          = useRef<{ entryId: string; tech: string } | null>(null);
 
   const add = () => { const e = empty(); onChange([...data, e]); setOpenId(e.id); };
   const remove = (id: string) => { onChange(data.filter((e) => e.id !== id)); if (openId === id) setOpenId(null); };
@@ -23,8 +24,10 @@ export function ProjectForm({ data, onChange }: Props) {
     if (!v) return;
     const entry = data.find((e) => e.id === id);
     if (!entry) return;
+    justAddedTech.current = { entryId: id, tech: v };
     update(id, "technologies", [...entry.technologies, v]);
     setTechIn((p) => ({ ...p, [id]: "" }));
+    setTimeout(() => { justAddedTech.current = null; }, 350);
   };
 
   return (
@@ -32,8 +35,13 @@ export function ProjectForm({ data, onChange }: Props) {
       <div className="flex items-center justify-between mb-1">
         <h3 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>Projects</h3>
         <button type="button" onClick={add}
-          className="flex items-center gap-1.5 text-xs font-medium transition-opacity hover:opacity-70"
-          style={{ color: "var(--accent-text)" }}>
+          className="flex items-center gap-1.5 text-xs font-medium"
+          style={{
+            color: "var(--accent-text)",
+            transition: "transform var(--t-fast) var(--ease-spring)",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = ""; }}>
           <PlusCircle className="size-4" /> Add Project
         </button>
       </div>
@@ -47,15 +55,18 @@ export function ProjectForm({ data, onChange }: Props) {
       {data.map((entry) => {
         const isOpen = openId === entry.id;
         return (
-          <div key={entry.id} className="overflow-hidden" style={{ border: "1px solid var(--border)", borderRadius: "var(--r-md)" }}>
+          <div key={entry.id} className="overflow-hidden" style={{ border: "1px solid var(--border)", borderRadius: "var(--r-md)", transition: "border-color var(--t-fast)" }}>
             <button type="button" className="accordion-header rounded-none"
               onClick={() => setOpenId(isOpen ? null : entry.id)}>
               <span className="truncate">{entry.name || "New Project"}</span>
-              {isOpen ? <ChevronUp className="size-4 shrink-0" style={{ color: "var(--text-muted)" }} />
-                      : <ChevronDown className="size-4 shrink-0" style={{ color: "var(--text-muted)" }} />}
+              <ChevronDown
+                className="size-4 shrink-0 accordion-chevron"
+                data-open={isOpen ? "true" : "false"}
+                style={{ color: "var(--text-muted)" }}
+              />
             </button>
             {isOpen && (
-              <div className="px-4 pb-4 pt-3 space-y-3" style={{ background: "var(--surface)" }}>
+              <div className="px-4 pb-4 pt-3 space-y-3 accordion-body" style={{ background: "var(--surface)" }}>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="label">Project Name</label>
@@ -77,10 +88,21 @@ export function ProjectForm({ data, onChange }: Props) {
                   <label className="label">Technologies</label>
                   <div className="flex flex-wrap gap-1.5 mb-2">
                     {entry.technologies.map((t) => (
-                      <span key={t} className="skill-tag">
+                      <span
+                        key={t}
+                        className="skill-tag"
+                        style={
+                          justAddedTech.current?.entryId === entry.id && justAddedTech.current?.tech === t
+                            ? { animation: "scale-up 0.28s var(--ease-spring) both" }
+                            : undefined
+                        }
+                      >
                         {t}
-                        <button type="button" onClick={() => update(entry.id, "technologies", entry.technologies.filter((x) => x !== t))}
-                          className="transition-opacity hover:opacity-60">
+                        <button
+                          type="button"
+                          onClick={() => update(entry.id, "technologies", entry.technologies.filter((x) => x !== t))}
+                          className="skill-tag-remove ml-0.5 flex items-center"
+                        >
                           <X className="size-3" />
                         </button>
                       </span>

@@ -1,4 +1,4 @@
-import { PlusCircle, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import { PlusCircle, Trash2, ChevronDown } from "lucide-react";
 import { useState, useMemo } from "react";
 import {
   DndContext, closestCenter, KeyboardSensor, PointerSensor,
@@ -89,8 +89,13 @@ export function ExperienceForm({ data, onChange }: Props) {
       <div className="flex items-center justify-between mb-1">
         <h3 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>Work Experience</h3>
         <button type="button" onClick={add}
-          className="flex items-center gap-1.5 text-xs font-medium transition-opacity hover:opacity-70"
-          style={{ color: "var(--accent-text)" }}>
+          className="flex items-center gap-1.5 text-xs font-medium"
+          style={{
+            color: "var(--accent-text)",
+            transition: "transform var(--t-fast) var(--ease-spring), opacity var(--t-fast)",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = ""; }}>
           <PlusCircle className="size-4" /> Add Entry
         </button>
       </div>
@@ -114,16 +119,18 @@ export function ExperienceForm({ data, onChange }: Props) {
               const isOpen = openId === entry.id;
               return (
                 <SortableItem key={entry.id} id={entry.id}>
-                  <div className="overflow-hidden" style={{ border: "1px solid var(--border)", borderRadius: "var(--r-md)" }}>
+                  <div className="overflow-hidden" style={{ border: "1px solid var(--border)", borderRadius: "var(--r-md)", transition: "border-color var(--t-fast)" }}>
                     <button type="button" className="accordion-header rounded-none"
                       onClick={() => setOpenId(isOpen ? null : entry.id)}>
                       <span className="truncate">{entry.position || entry.company || "New Entry"}</span>
-                      {isOpen
-                        ? <ChevronUp   className="size-4 shrink-0" style={{ color: "var(--text-muted)" }} />
-                        : <ChevronDown className="size-4 shrink-0" style={{ color: "var(--text-muted)" }} />}
+                      <ChevronDown
+                        className="size-4 shrink-0 accordion-chevron"
+                        data-open={isOpen ? "true" : "false"}
+                        style={{ color: "var(--text-muted)" }}
+                      />
                     </button>
                     {isOpen && (
-                      <div className="px-4 pb-4 pt-3 space-y-3" style={{ background: "var(--surface)" }}>
+                      <div className="px-4 pb-4 pt-3 space-y-3 accordion-body" style={{ background: "var(--surface)" }}>
                         <div className="grid grid-cols-2 gap-3">
                           <div>
                             <label className="label">Position</label>

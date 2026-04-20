@@ -31,7 +31,11 @@ export function AISuggestionPanel({
           background:  "var(--accent-dim)",
           color:       "var(--accent-text)",
           border:      "1px solid color-mix(in oklch, var(--accent) 35%, transparent)",
+          transform:   "translateY(0)",
+          transition:  "all var(--t-fast) var(--ease-spring)",
         }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)"; (e.currentTarget as HTMLButtonElement).style.boxShadow = "var(--shadow-sm)"; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = ""; (e.currentTarget as HTMLButtonElement).style.boxShadow = ""; }}
       >
         {isLoading
           ? <Loader2 className="size-3.5 animate-spin" />
@@ -42,7 +46,7 @@ export function AISuggestionPanel({
       {/* Suggestion preview panel */}
       {isOpen && suggestion && (
         <div
-          className="rounded-xl p-4 space-y-3 anim-fade-up"
+          className="rounded-xl p-4 space-y-3 accordion-body"
           style={{
             background:  "var(--accent-dim)",
             border:      "1px solid color-mix(in oklch, var(--accent) 30%, transparent)",

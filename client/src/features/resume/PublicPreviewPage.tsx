@@ -48,7 +48,7 @@ export function PublicPreviewPage() {
   }
 
   return (
-    <div className="min-h-screen print:bg-white" style={{ background: "var(--bg-subtle)" }}>
+    <div className="min-h-screen print:bg-white page-enter" style={{ background: "var(--bg-subtle)" }}>
 
       {/* Branded top bar */}
       <header className="print:hidden" style={{
@@ -56,7 +56,11 @@ export function PublicPreviewPage() {
         padding: "0 1.5rem", height: "52px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
       }}>
-        <Link to="/" className="flex items-center gap-2 transition-opacity hover:opacity-75">
+        <Link to="/"
+          className="flex items-center gap-2"
+          style={{ transition: "transform var(--t-base) var(--ease-spring), opacity var(--t-fast)" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; (e.currentTarget as HTMLElement).style.opacity = "0.8"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.opacity = ""; }}>
           <FileText className="size-4" style={{ color: "var(--accent-text)" }} />
           <span className="font-bold text-sm tracking-tight" style={{ color: "var(--text-primary)" }}>
             ResumeBuilder
@@ -81,13 +85,13 @@ export function PublicPreviewPage() {
       </header>
 
       {/* Resume */}
-      <div className="max-w-4xl mx-auto px-4 py-8 print:p-0 print:max-w-none">
+      <div className="max-w-4xl mx-auto px-4 py-8 print:p-0 print:max-w-none anim-fade-up delay-1">
         <ResumePreview resume={resume} />
       </div>
 
       {/* Bottom CTA banner */}
       {!token && (
-        <div className="print:hidden py-10 px-4 text-center" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="print:hidden py-10 px-4 text-center anim-fade-up delay-3" style={{ borderTop: "1px solid var(--border)" }}>
           <p className="text-sm font-semibold mb-1" style={{ color: "var(--text-primary)" }}>
             Like this resume?
           </p>

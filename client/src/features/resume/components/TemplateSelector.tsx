@@ -49,10 +49,10 @@ export function TemplateSelector({ selected, onChange, resume }: Props) {
               key={tpl.id}
               type="button"
               onClick={() => onChange(tpl.id)}
-              className="text-left rounded-xl overflow-hidden transition-all"
+              className="text-left rounded-xl overflow-hidden transition-all template-card"
               style={{
                 border:     `2px solid ${isSelected ? "var(--accent)" : "var(--border-strong)"}`,
-                boxShadow:  isSelected ? "0 0 0 3px var(--accent-dim)" : "none",
+                boxShadow:  isSelected ? "0 0 0 3px var(--accent-dim), var(--shadow-md)" : "none",
                 background: "var(--surface-raised)",
               }}
               title={tpl.name}

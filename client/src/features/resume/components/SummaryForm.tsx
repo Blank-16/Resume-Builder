@@ -61,7 +61,11 @@ export function SummaryForm({ data, onChange, experience = [], skills = [] }: Pr
       />
 
       <div className="flex justify-end">
-        <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+        <span className="text-xs" style={{
+          color: data.length > 1800 ? "var(--danger)" : data.length > 1200 ? "var(--warning)" : "var(--text-muted)",
+          transition: "color var(--t-base) var(--ease-out)",
+          fontVariantNumeric: "tabular-nums",
+        }}>
           {data.length} / 2000 characters
         </span>
       </div>

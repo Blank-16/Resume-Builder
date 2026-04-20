@@ -56,38 +56,38 @@ export function CompletionScore({ resume }: Props) {
       {/* Score ring + label */}
       <div className="flex items-center gap-4 p-4 rounded-xl" style={{ background: "var(--bg-subtle)" }}>
         <svg width="52" height="52" viewBox="0 0 52 52">
-          {/* Track */}
           <circle cx="26" cy="26" r={r} fill="none" strokeWidth="5" stroke="var(--border-strong)" />
-          {/* Fill */}
           <circle
             cx="26" cy="26" r={r} fill="none" strokeWidth="5"
             stroke={color}
             strokeLinecap="round"
             strokeDasharray={`${dash} ${circumference - dash}`}
-            className="score-ring"
-            style={{ transition: "stroke-dasharray 0.6s var(--ease-spring)" }}
+            className={`score-ring ${score === 100 ? "score-ring-perfect" : ""}`}
+            style={{ transition: "stroke-dasharray 0.6s var(--ease-spring), stroke 0.4s var(--ease-out)" }}
           />
-          <text x="26" y="30" textAnchor="middle" fontSize="11" fontWeight="700" fill={color}>
+          <text x="26" y="30" textAnchor="middle" fontSize="11" fontWeight="700" fill={color}
+            style={{ transition: "fill 0.4s var(--ease-out)" }}>
             {score}%
           </text>
         </svg>
 
         <div>
-          <p className="text-sm font-semibold" style={{ color }}>{label}</p>
+          <p className="text-sm font-semibold" style={{ color, transition: "color 0.4s var(--ease-out)" }}>{label}</p>
           <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>
             {checks.filter((c) => c.done).length}/{checks.length} sections complete
           </p>
         </div>
       </div>
 
-      {/* Remaining items */}
       {remaining.length > 0 && (
         <div className="space-y-1.5">
           <p className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>
             To improve your score:
           </p>
-          {remaining.slice(0, 4).map((c) => (
-            <div key={c.label} className="flex items-center gap-2 text-xs" style={{ color: "var(--text-secondary)" }}>
+          {remaining.slice(0, 4).map((c, i) => (
+            <div key={c.label}
+              className="flex items-center gap-2 text-xs anim-fade-up"
+              style={{ color: "var(--text-secondary)", animationDelay: `${i * 40}ms` }}>
               <AlertCircle className="size-3.5 shrink-0" style={{ color: "var(--danger)" }} />
               {c.label}
             </div>
@@ -101,7 +101,7 @@ export function CompletionScore({ resume }: Props) {
       )}
 
       {remaining.length === 0 && (
-        <div className="flex items-center gap-2 text-xs" style={{ color: "var(--success)" }}>
+        <div className="flex items-center gap-2 text-xs anim-bounce-in" style={{ color: "var(--success)" }}>
           <CheckCircle2 className="size-3.5" /> All sections complete!
         </div>
       )}

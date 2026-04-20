@@ -134,11 +134,11 @@ export function ATSScorePanel({ resume }: Props) {
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 space-y-2" style={{ borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
+        <div className="px-4 pb-4 space-y-2 accordion-body" style={{ borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
           {checks.map((check) => (
             <div
               key={check.category}
-              className="rounded-lg p-3 space-y-1"
+              className="ats-check-item rounded-lg p-3 space-y-1"
               style={{
                 background: check.passed ? "color-mix(in oklch, var(--success) 8%, transparent)"
                                          : "var(--danger-dim)",

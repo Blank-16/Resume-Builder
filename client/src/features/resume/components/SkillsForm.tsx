@@ -1,16 +1,19 @@
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface Props { data: string[]; onChange: (d: string[]) => void; }
 
 export function SkillsForm({ data, onChange }: Props) {
   const [input, setInput] = useState("");
+  const justAdded = useRef<string | null>(null);
 
   const add = () => {
     const v = input.trim();
     if (!v || data.includes(v)) return;
+    justAdded.current = v;
     onChange([...data, v]);
     setInput("");
+    setTimeout(() => { justAdded.current = null; }, 350);
   };
 
   return (
@@ -20,10 +23,20 @@ export function SkillsForm({ data, onChange }: Props) {
       <div className="flex flex-wrap gap-2 min-h-10 p-2.5 rounded-lg"
         style={{ background: "var(--bg-subtle)", border: "1px solid var(--border)" }}>
         {data.map((skill) => (
-          <span key={skill} className="skill-tag">
+          <span
+            key={skill}
+            className="skill-tag"
+            style={justAdded.current === skill
+              ? { animation: "scale-up 0.28s var(--ease-spring) both" }
+              : undefined}
+          >
             {skill}
-            <button type="button" onClick={() => onChange(data.filter((s) => s !== skill))}
-              className="transition-opacity hover:opacity-60 ml-0.5">
+            <button
+              type="button"
+              onClick={() => onChange(data.filter((s) => s !== skill))}
+              className="skill-tag-remove ml-0.5 flex items-center"
+              aria-label={`Remove ${skill}`}
+            >
               <X className="size-3" />
             </button>
           </span>

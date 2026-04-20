@@ -41,7 +41,7 @@ export function ThemeToggle() {
 
       {open && (
         <div
-          className="absolute right-0 top-full mt-2 w-48 overflow-hidden anim-scale-up"
+          className="absolute right-0 top-full mt-2 w-48 overflow-hidden anim-slide-up"
           style={{
             zIndex:     200,
             background: "var(--surface-raised)",
@@ -58,13 +58,20 @@ export function ThemeToggle() {
                   key={t.id}
                   type="button"
                   onClick={() => { dispatch(setTheme(t.id)); setOpen(false); }}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs transition-colors"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs"
                   style={{
-                    background: isActive ? "var(--accent-dim)" : "transparent",
-                    color:      isActive ? "var(--accent-text)" : "var(--text-secondary)",
+                    background:  isActive ? "var(--accent-dim)" : "transparent",
+                    color:       isActive ? "var(--accent-text)" : "var(--text-secondary)",
+                    transition:  "background var(--t-fast), transform var(--t-fast) var(--ease-spring)",
                   }}
-                  onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = "var(--bg-subtle)"; }}
-                  onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) e.currentTarget.style.background = "var(--bg-subtle)";
+                    e.currentTarget.style.transform = "translateX(2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.transform = "";
+                  }}
                 >
                   <span className="text-base leading-none">{t.icon}</span>
                   <div>

@@ -114,10 +114,12 @@ export default function App() {
           style: {
             fontSize:     "13px",
             maxWidth:     "360px",
-            borderRadius: "10px",
+            borderRadius: "var(--r-xl)",
             background:   "var(--surface-raised)",
             color:        "var(--text-primary)",
             border:       "1px solid var(--border-strong)",
+            boxShadow:    "var(--shadow-lg)",
+            animation:    "slide-up-fade 0.28s var(--ease-spring) both",
           },
         }}
       />

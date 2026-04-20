@@ -21,8 +21,8 @@ export function PersonalInfoForm({ data, onChange }: Props) {
       <legend className="text-sm font-semibold mb-4" style={{ color: "var(--text-primary)" }}>
         Personal Information
       </legend>
-      {FIELDS.map(({ key, label, type = "text", placeholder }) => (
-        <div key={key}>
+      {FIELDS.map(({ key, label, type = "text", placeholder }, i) => (
+        <div key={key} className="anim-fade-up" style={{ animationDelay: `${i * 35}ms` }}>
           <label htmlFor={`pi-${key}`} className="label">{label}</label>
           <input
             id={`pi-${key}`}

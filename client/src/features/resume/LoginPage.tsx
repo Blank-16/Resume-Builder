@@ -34,18 +34,21 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden page-enter"
       style={{ background: "var(--bg)" }}>
       {/* Background glows */}
-      <div className="glow-orb w-[500px] h-[500px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      <div className="glow-orb glow-orb-float w-[500px] h-[500px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{ background: "var(--accent)", opacity: 0.2 }} />
-      <div className="glow-orb w-[250px] h-[250px] top-1/4 right-0"
+      <div className="glow-orb glow-orb-float-alt w-[250px] h-[250px] top-1/4 right-0"
         style={{ background: "color-mix(in oklch, var(--accent) 50%, #e879f9)", opacity: 0.15 }} />
 
       <div className="w-full max-w-sm relative">
         {/* Logo */}
         <div className="text-center mb-8 anim-fade-up">
-          <Link to="/" className="inline-flex items-center gap-2.5 mb-6 transition-opacity hover:opacity-75">
+          <Link to="/" className="inline-flex items-center gap-2.5 mb-6 logo-icon"
+            style={{ display: "inline-flex", transition: "transform var(--t-base) var(--ease-spring), opacity var(--t-fast)" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.8"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = ""; (e.currentTarget as HTMLElement).style.transform = ""; }}>
             <div className="size-8 rounded-xl flex items-center justify-center"
               style={{ background: "var(--accent)", boxShadow: "var(--shadow-glow)" }}>
               <FileText className="size-4 text-white" />
@@ -115,8 +118,14 @@ export function LoginPage() {
             <p className="text-xs" style={{ color: "var(--text-muted)" }}>
               {isReg ? "Already have an account?" : "Don't have an account?"}{" "}
               <button type="button" onClick={() => setIsReg(v => !v)}
-                className="font-semibold transition-opacity hover:opacity-75"
-                style={{ color: "var(--accent-text)" }}>
+                className="font-semibold"
+                style={{
+                  color: "var(--accent-text)",
+                  position: "relative",
+                  transition: "opacity var(--t-fast)",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.75"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = ""; }}>
                 {isReg ? "Sign in" : "Create one free"}
               </button>
             </p>

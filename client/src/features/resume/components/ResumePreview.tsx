@@ -33,7 +33,7 @@ class TemplateErrorBoundary extends Component<
           <button
             type="button"
             onClick={() => this.setState({ hasError: false, message: "" })}
-            className="text-xs px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors text-gray-600"
+            className="btn btn-surface text-xs px-3 py-1.5"
           >
             Retry
           </button>

@@ -49,7 +49,7 @@ export function ConfirmModal({
           <div className="flex items-center gap-3">
             {danger && (
               <div
-                className="size-8 rounded-xl flex items-center justify-center shrink-0"
+                className="size-8 rounded-xl flex items-center justify-center shrink-0 anim-bounce-in"
                 style={{ background: "var(--danger-dim)" }}
               >
                 <AlertTriangle className="size-4" style={{ color: "var(--danger)" }} />

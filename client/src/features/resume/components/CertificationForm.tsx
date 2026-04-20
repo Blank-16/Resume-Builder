@@ -1,4 +1,4 @@
-import { PlusCircle, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import { PlusCircle, Trash2, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { generateId } from "@/utils/resume";
 import type { CertificationEntry } from "@/types";
@@ -22,8 +22,13 @@ export function CertificationForm({ data, onChange }: Props) {
       <div className="flex items-center justify-between mb-1">
         <h3 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>Certifications</h3>
         <button type="button" onClick={add}
-          className="flex items-center gap-1.5 text-xs font-medium transition-opacity hover:opacity-70"
-          style={{ color: "var(--accent-text)" }}>
+          className="flex items-center gap-1.5 text-xs font-medium"
+          style={{
+            color: "var(--accent-text)",
+            transition: "transform var(--t-fast) var(--ease-spring)",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = ""; }}>
           <PlusCircle className="size-4" /> Add
         </button>
       </div>
@@ -37,15 +42,19 @@ export function CertificationForm({ data, onChange }: Props) {
       {data.map((entry) => {
         const isOpen = openId === entry.id;
         return (
-          <div key={entry.id} className="overflow-hidden" style={{ border: "1px solid var(--border)", borderRadius: "var(--r-md)" }}>
+          <div key={entry.id} className="overflow-hidden"
+            style={{ border: "1px solid var(--border)", borderRadius: "var(--r-md)", transition: "border-color var(--t-fast)" }}>
             <button type="button" className="accordion-header rounded-none"
               onClick={() => setOpenId(isOpen ? null : entry.id)}>
               <span className="truncate">{entry.name || "New Certification"}</span>
-              {isOpen ? <ChevronUp className="size-4 shrink-0" style={{ color: "var(--text-muted)" }} />
-                      : <ChevronDown className="size-4 shrink-0" style={{ color: "var(--text-muted)" }} />}
+              <ChevronDown
+                className="size-4 shrink-0 accordion-chevron"
+                data-open={isOpen ? "true" : "false"}
+                style={{ color: "var(--text-muted)" }}
+              />
             </button>
             {isOpen && (
-              <div className="px-4 pb-4 pt-3 space-y-3" style={{ background: "var(--surface)" }}>
+              <div className="px-4 pb-4 pt-3 space-y-3 accordion-body" style={{ background: "var(--surface)" }}>
                 <div>
                   <label className="label">Certification Name</label>
                   <input type="text" value={entry.name} className="input" placeholder="AWS Solutions Architect"

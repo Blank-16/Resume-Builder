@@ -75,7 +75,7 @@ export function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "var(--bg-subtle)" }}>
+    <div className="min-h-screen page-enter" style={{ background: "var(--bg-subtle)" }}>
       {showDeleteModal && (
         <ConfirmModal
           title="Delete your account"
@@ -110,7 +110,7 @@ export function SettingsPage() {
       <main className="max-w-xl mx-auto px-4 py-10 space-y-6">
 
         {/* Profile */}
-        <div className="card-raised overflow-hidden">
+        <div className="card-raised overflow-hidden anim-fade-up">
           <div className="px-6 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
             <div className="flex items-center gap-2">
               <User className="size-4" style={{ color: "var(--accent-text)" }} />
@@ -137,7 +137,7 @@ export function SettingsPage() {
         </div>
 
         {/* Password */}
-        <div className="card-raised overflow-hidden">
+        <div className="card-raised overflow-hidden anim-fade-up delay-2">
           <div className="px-6 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
             <div className="flex items-center gap-2">
               <Lock className="size-4" style={{ color: "var(--accent-text)" }} />
@@ -171,7 +171,7 @@ export function SettingsPage() {
         </div>
 
         {/* Danger zone */}
-        <div className="card-raised overflow-hidden" style={{ borderColor: "var(--danger)" }}>
+        <div className="card-raised overflow-hidden anim-fade-up delay-3" style={{ borderColor: "var(--danger)" }}>
           <div className="px-6 py-4" style={{ borderBottom: "1px solid var(--border)", background: "var(--danger-dim)" }}>
             <div className="flex items-center gap-2">
               <Trash2 className="size-4" style={{ color: "var(--danger)" }} />

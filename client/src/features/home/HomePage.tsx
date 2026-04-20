@@ -35,7 +35,7 @@ export function HomePage() {
       {/* ── Navbar ── */}
       <nav className="navbar justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="size-7 rounded-lg flex items-center justify-center"
+          <div className="size-7 rounded-lg flex items-center justify-center logo-icon"
             style={{ background: "var(--accent)", boxShadow: "var(--shadow-glow)" }}>
             <FileText className="size-3.5 text-white" />
           </div>
@@ -59,9 +59,9 @@ export function HomePage() {
       {/* ── Hero ── */}
       <section className="relative pt-36 pb-24 px-5 overflow-hidden">
         {/* Background glows */}
-        <div className="glow-orb w-[600px] h-[500px] -top-32 left-1/2 -translate-x-1/2"
+        <div className="glow-orb glow-orb-float w-[600px] h-[500px] -top-32 left-1/2 -translate-x-1/2"
           style={{ background: "var(--accent)" }} />
-        <div className="glow-orb w-[300px] h-[300px] top-20 -right-20"
+        <div className="glow-orb glow-orb-float-alt w-[300px] h-[300px] top-20 -right-20"
           style={{ background: "color-mix(in oklch, var(--accent) 60%, #e879f9)", opacity: 0.25 }} />
 
         <div className="max-w-3xl mx-auto text-center relative">
@@ -141,18 +141,28 @@ export function HomePage() {
             <div className="grid grid-cols-[200px_1fr] min-h-[280px]">
               <div className="p-4 space-y-1" style={{ borderRight: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
                 {MOCK_SECTIONS.map((s, i) => (
-                  <div key={s} className="flex items-center gap-2 px-3 py-2 rounded-xl text-[11px] font-medium transition-colors"
+                  <div key={s}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-[11px] font-medium anim-fade-up"
                     style={{
-                      background: i === 0 ? "var(--accent-dim)" : "transparent",
-                      color:      i === 0 ? "var(--accent-text)" : "var(--text-muted)",
+                      background:     i === 0 ? "var(--accent-dim)" : "transparent",
+                      color:          i === 0 ? "var(--accent-text)" : "var(--text-muted)",
+                      animationDelay: `${0.3 + i * 0.06}s`,
+                      transition:     "background var(--t-fast), color var(--t-fast)",
                     }}>
                     <span className="size-1.5 rounded-full bg-current shrink-0" />{s}
                   </div>
                 ))}
                 <div className="pt-3 space-y-2">
                   {[75, 90, 60, 82].map((w, i) => (
-                    <div key={i} className="h-1.5 rounded-full"
-                      style={{ width: `${w}%`, background: "var(--border-strong)" }} />
+                    <div key={i} className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--border)" }}>
+                      <div className="h-full rounded-full"
+                        style={{
+                          width: `${w}%`,
+                          background: "var(--border-strong)",
+                          animation: `slide-left 0.5s var(--ease-spring) ${0.5 + i * 0.08}s both`,
+                          transformOrigin: "left",
+                        }} />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -163,12 +173,13 @@ export function HomePage() {
                 <div className="h-px" style={{ background: "var(--border)" }} />
                 <div className="space-y-2">
                   {[100, 88, 95, 72, 84].map((w, i) => (
-                    <div key={i} className="h-2.5 rounded skeleton" style={{ width: `${w}%` }} />
+                    <div key={i} className="h-2.5 rounded skeleton" style={{ width: `${w}%`, animationDelay: `${i * 0.15}s` }} />
                   ))}
                 </div>
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  {MOCK_TAGS.map(t => (
-                    <span key={t} className="skill-tag text-[10px] px-2.5 py-0.5">{t}</span>
+                  {MOCK_TAGS.map((t, i) => (
+                    <span key={t} className="skill-tag text-[10px] px-2.5 py-0.5 anim-fade-up"
+                      style={{ animationDelay: `${0.6 + i * 0.07}s` }}>{t}</span>
                   ))}
                 </div>
               </div>
@@ -179,7 +190,7 @@ export function HomePage() {
 
       {/* ── Features ── */}
       <section className="py-28 px-5 relative">
-        <div className="glow-orb w-[400px] h-[400px] top-1/2 -translate-y-1/2 -left-40"
+        <div className="glow-orb glow-orb-float w-[400px] h-[400px] top-1/2 -translate-y-1/2 -left-40"
           style={{ background: "var(--accent)", opacity: 0.18 }} />
 
         <div className="max-w-5xl mx-auto relative">
@@ -196,10 +207,11 @@ export function HomePage() {
               <div key={title}
                 className="card feature-card p-6 anim-fade-up"
                 style={{ animationDelay: `${i * 75}ms` }}>
-                <div className="size-10 rounded-2xl flex items-center justify-center mb-5"
+                <div className="size-10 rounded-2xl flex items-center justify-center mb-5 feature-icon"
                   style={{
                     background: "linear-gradient(135deg, var(--accent-dim), color-mix(in oklch, var(--accent-dim) 50%, transparent))",
                     boxShadow: "0 0 20px var(--accent-dim)",
+                    transition: "transform var(--t-base) var(--ease-spring), box-shadow var(--t-base)",
                   }}>
                   <Icon className="size-5" style={{ color: "var(--accent-text)" }} />
                 </div>
@@ -221,7 +233,7 @@ export function HomePage() {
               boxShadow: "var(--shadow-lg), var(--shadow-glow)",
             }}>
             {/* Corner glow */}
-            <div className="glow-orb w-64 h-64 -top-16 -right-16"
+            <div className="glow-orb glow-orb-float-alt w-64 h-64 -top-16 -right-16"
               style={{ background: "var(--accent)", opacity: 0.35 }} />
 
             <div className="relative">

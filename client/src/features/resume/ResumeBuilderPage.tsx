@@ -83,7 +83,7 @@ export function ResumeBuilderPage() {
       }}>
         {/* Progress */}
         <div className="h-0.5" style={{ background: "var(--border)" }}>
-          <div className="h-full transition-all duration-500"
+          <div className="h-full progress-fill"
             style={{ width: `${progress}%`, background: "var(--accent)" }} />
         </div>
 
@@ -152,11 +152,12 @@ export function ResumeBuilderPage() {
           className="settings-btn w-full flex items-center justify-between px-5 py-3 text-sm font-medium"
           style={{ color: "var(--text-primary)", background: "transparent" }}>
           Style Settings
-          <ChevronRight className="size-4 transition-transform"
-            style={{ color: "var(--text-muted)", transform: showSettings ? "rotate(90deg)" : "none" }} />
+          <ChevronRight className="size-4 accordion-chevron"
+            data-open={showSettings ? "true" : "false"}
+            style={{ color: "var(--text-muted)" }} />
         </button>
         {showSettings && (
-          <div className="px-5 pb-5 space-y-5"
+          <div className="px-5 pb-5 space-y-5 accordion-body"
             style={{ borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
             <TemplateSelector
               selected={resume.template}
@@ -171,7 +172,7 @@ export function ResumeBuilderPage() {
   );
 
   return (
-    <div className="min-h-screen print:bg-white" style={{ background: "var(--bg-subtle)" }}>
+    <div className="min-h-screen print:bg-white page-enter" style={{ background: "var(--bg-subtle)" }}>
 
       {/* Version history drawer */}
       {showVersions && (
@@ -199,7 +200,16 @@ export function ResumeBuilderPage() {
             className="text-sm font-semibold bg-transparent border-none outline-none min-w-0 truncate"
             style={{ color: "var(--text-primary)", width: "140px" }} />
           {isDirty && (
-            <span className="text-xs shrink-0 hidden sm:inline" style={{ color: "var(--text-muted)" }}>• Unsaved</span>
+            <span className="text-xs shrink-0 hidden sm:inline flex items-center gap-1" style={{ color: "var(--text-muted)" }}>
+              <span style={{
+                display: "inline-block",
+                width: "6px", height: "6px",
+                borderRadius: "50%",
+                background: "var(--warning)",
+                animation: "pulse-ring 1.5s ease infinite",
+              }} />
+              Unsaved
+            </span>
           )}
         </div>
 

@@ -103,7 +103,7 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen flex" style={{ background: "var(--bg)" }}>
+    <div className="min-h-screen flex page-enter" style={{ background: "var(--bg)" }}>
       {deleteTarget && (
         <ConfirmModal
           title="Delete resume"
@@ -118,7 +118,7 @@ export function DashboardPage() {
       <aside className="sidebar w-56 shrink-0 h-screen sticky top-0 hidden lg:flex">
         {/* Logo */}
         <div className="px-5 py-5 flex items-center gap-2.5">
-          <div className="size-7 rounded-lg flex items-center justify-center bg-accent"
+          <div className="size-7 rounded-lg flex items-center justify-center bg-accent logo-icon"
             style={{ background: "var(--accent)" }}>
             <FileText className="size-3.5 text-white" />
           </div>
@@ -274,14 +274,14 @@ export function DashboardPage() {
                               : <MoreHorizontal className="size-4" />}
                           </button>
                           {openMenuId === resume._id && (
-                            <div className="absolute right-0 top-full mt-2 w-40 overflow-hidden anim-scale-up"
+                            <div className="absolute right-0 top-full mt-2 w-40 overflow-hidden anim-slide-up"
                               style={{ zIndex: 50, background: "var(--surface)", border: "1px solid var(--border-strong)", borderRadius: "var(--r-xl)", boxShadow: "var(--shadow-lg)" }}>
                               {[
                                 { icon: Edit3,  label: "Rename",    fn: () => setRename({ id: resume._id, value: resume.title }) },
                                 { icon: Copy,   label: "Duplicate", fn: () => void handleDuplicate(resume._id) },
                               ].map(({ icon: Icon, label, fn }) => (
                                 <button key={label} type="button" onClick={() => { fn(); setOpenMenuId(null); }}
-                                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs transition-colors"
+                                  className="dropdown-item w-full flex items-center gap-2.5 px-4 py-2.5 text-xs"
                                   style={{ color: "var(--text-secondary)" }}
                                   onMouseEnter={(e) => (e.currentTarget.style.background = "var(--accent-dim)")}
                                   onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
@@ -291,7 +291,7 @@ export function DashboardPage() {
                               <div style={{ height: "1px", background: "var(--border)" }} />
                               <button type="button"
                                 onClick={() => { setDeleteTarget({ id: resume._id, title: resume.title }); setOpenMenuId(null); }}
-                                className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs"
+                                className="dropdown-item w-full flex items-center gap-2.5 px-4 py-2.5 text-xs"
                                 style={{ color: "var(--danger)" }}
                                 onMouseEnter={(e) => (e.currentTarget.style.background = "var(--danger-dim)")}
                                 onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
