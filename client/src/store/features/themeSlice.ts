@@ -8,7 +8,8 @@ interface ThemeState {
 
 function initTheme(): Theme {
   const stored = localStorage.getItem("theme") as Theme | null;
-  if (stored && ["light","dark","ocean","forest"].includes(stored)) return stored;
+  if (stored && ["light", "dark", "ocean", "forest"].includes(stored))
+    return stored;
   return "light"; // light is the default
 }
 

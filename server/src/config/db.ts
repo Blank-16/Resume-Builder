@@ -7,7 +7,8 @@ export async function connectDB(): Promise<void> {
 
   // Reconnect automatically if the connection drops (Atlas may close idle connections)
   mongoose.connection.on("disconnected", () => {
-    if (env.isDev) console.warn("[MongoDB] Disconnected — attempting reconnect…");
+    if (env.isDev)
+      console.warn("[MongoDB] Disconnected — attempting reconnect…");
     void mongoose.connect(env.mongodbUri, connectionOptions);
   });
 

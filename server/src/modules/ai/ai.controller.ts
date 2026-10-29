@@ -6,21 +6,25 @@ import type { ApiResponse, AISuggestResponse } from "../../types/shared.js";
 const suggestSchema = z.object({
   field: z.enum(["summary", "experience_description"]),
   context: z.object({
-    currentText:         z.string().optional(),
-    position:            z.string().optional(),
-    company:             z.string().optional(),
-    existingExperience:  z.array(z.object({
-      position:    z.string(),
-      company:     z.string(),
-      description: z.string(),
-    })).optional(),
+    currentText: z.string().optional(),
+    position: z.string().optional(),
+    company: z.string().optional(),
+    existingExperience: z
+      .array(
+        z.object({
+          position: z.string(),
+          company: z.string(),
+          description: z.string(),
+        }),
+      )
+      .optional(),
     skills: z.array(z.string()).optional(),
   }),
 });
 
 function buildPrompt(
   field: "summary" | "experience_description",
-  context: z.infer<typeof suggestSchema>["context"]
+  context: z.infer<typeof suggestSchema>["context"],
 ): string {
   if (field === "summary") {
     const expLines = (context.existingExperience ?? [])
@@ -34,7 +38,9 @@ function buildPrompt(
       skillLine ? `Skills: ${skillLine}` : "",
       context.currentText ? `Current draft: ${context.currentText}` : "",
       "Return ONLY the summary text. No preamble, no quotes.",
-    ].filter(Boolean).join("\n\n");
+    ]
+      .filter(Boolean)
+      .join("\n\n");
   }
 
   return [
@@ -43,18 +49,30 @@ function buildPrompt(
     `Company: ${context.company ?? "unknown"}`,
     context.currentText ? `Current draft: ${context.currentText}` : "",
     "Return ONLY the bullet points, one per line, starting with •. No preamble.",
-  ].filter(Boolean).join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
-export async function suggestContent(req: Request, res: Response): Promise<void> {
+export async function suggestContent(
+  req: Request,
+  res: Response,
+): Promise<void> {
   if (!env.openaiKey) {
-    res.status(503).json({ message: "AI suggestions are not configured on this server." });
+    res
+      .status(503)
+      .json({ message: "AI suggestions are not configured on this server." });
     return;
   }
 
   const parsed = suggestSchema.safeParse(req.body);
   if (!parsed.success) {
-    res.status(400).json({ message: "Validation failed", errors: parsed.error.flatten().fieldErrors });
+    res
+      .status(400)
+      .json({
+        message: "Validation failed",
+        errors: parsed.error.flatten().fieldErrors,
+      });
     return;
   }
 
@@ -66,15 +84,19 @@ export async function suggestContent(req: Request, res: Response): Promise<void>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization:  `Bearer ${env.openaiKey}`,
+      Authorization: `Bearer ${env.openaiKey}`,
     },
     body: JSON.stringify({
-      model:       env.openaiModel,
-      max_tokens:  400,
+      model: env.openaiModel,
+      max_tokens: 400,
       temperature: 0.7,
       messages: [
-        { role: "system", content: "You are a professional resume writing expert. Be concise, specific, and impactful." },
-        { role: "user",   content: prompt },
+        {
+          role: "system",
+          content:
+            "You are a professional resume writing expert. Be concise, specific, and impactful.",
+        },
+        { role: "user", content: prompt },
       ],
     }),
   });
@@ -82,11 +104,13 @@ export async function suggestContent(req: Request, res: Response): Promise<void>
   if (!response.ok) {
     const text = await response.text();
     console.error("[AI] Request failed:", response.status, text);
-    res.status(502).json({ message: "AI service returned an error. Please try again." });
+    res
+      .status(502)
+      .json({ message: "AI service returned an error. Please try again." });
     return;
   }
 
-  const json = await response.json() as {
+  const json = (await response.json()) as {
     choices: Array<{ message: { content: string } }>;
   };
 
@@ -96,5 +120,8 @@ export async function suggestContent(req: Request, res: Response): Promise<void>
     return;
   }
 
-  res.json({ message: "Suggestion generated", data: { suggestion } } satisfies ApiResponse<AISuggestResponse>);
+  res.json({
+    message: "Suggestion generated",
+    data: { suggestion },
+  } satisfies ApiResponse<AISuggestResponse>);
 }

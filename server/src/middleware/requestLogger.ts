@@ -4,7 +4,7 @@ import { env } from "../config/env.js";
 export function requestLogger(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void {
   if (!env.isDev) return next();
 
@@ -18,7 +18,7 @@ export function requestLogger(
           ? "\x1b[33m"
           : "\x1b[32m";
     console.log(
-      `${color}${req.method}\x1b[0m ${req.path} ${res.statusCode} ${duration}ms`
+      `${color}${req.method}\x1b[0m ${req.path} ${res.statusCode} ${duration}ms`,
     );
   });
   next();

@@ -8,7 +8,9 @@ const envSchema = z.object({
   MONGODB_URI: z.string().min(1, "MONGODB_URI is required"),
   JWT_KEY: z.string().min(16, "JWT_KEY must be at least 16 characters"),
   JWT_EXPIRES_IN: z.string().default("7d"),
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
   CLIENT_URL: z.string().url().default("http://localhost:5173"),
   IMAGEKIT_PRIVATE_KEY: z.string().optional(),
   OPENAI_KEY: z.string().optional(),
@@ -19,7 +21,10 @@ const envSchema = z.object({
 const parsed = envSchema.safeParse(process.env);
 
 if (!parsed.success) {
-  console.error("Invalid environment variables:", parsed.error.flatten().fieldErrors);
+  console.error(
+    "Invalid environment variables:",
+    parsed.error.flatten().fieldErrors,
+  );
   process.exit(1);
 }
 

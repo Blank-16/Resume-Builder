@@ -11,14 +11,14 @@ interface Options {
 }
 
 export function useResumeBuilder({ resumeId }: Options) {
-  const [resume,    setResume]    = useState<Resume>(createEmptyResume());
-  const [isSaving,  setIsSaving]  = useState(false);
+  const [resume, setResume] = useState<Resume>(createEmptyResume());
+  const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDirty,   setIsDirty]   = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
 
   const autosaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Ref always holds latest resume so autosave closure doesn't go stale
-  const latestResume  = useRef<Resume>(resume);
+  const latestResume = useRef<Resume>(resume);
 
   useEffect(() => {
     latestResume.current = resume;
@@ -61,10 +61,18 @@ export function useResumeBuilder({ resumeId }: Options) {
     setIsSaving(true);
     try {
       // Strip server-managed fields before sending
-      const { _id: _a, userId: _b, createdAt: _c, updatedAt: _d, ...payload } =
-        latestResume.current;
+      const {
+        _id: _a,
+        userId: _b,
+        createdAt: _c,
+        updatedAt: _d,
+        ...payload
+      } = latestResume.current;
       // Explicitly acknowledge unused destructured vars to satisfy the linter
-      void _a; void _b; void _c; void _d;
+      void _a;
+      void _b;
+      void _c;
+      void _d;
 
       const { data } = await resumeApi.update(resumeId, payload);
       if (data.data) {
@@ -101,7 +109,7 @@ export function useResumeBuilder({ resumeId }: Options) {
         void persist();
       }, AUTOSAVE_DELAY_MS);
     },
-    [persist]
+    [persist],
   );
 
   const toggleVisibility = useCallback(async () => {
@@ -115,9 +123,19 @@ export function useResumeBuilder({ resumeId }: Options) {
       }
       toast.success(data.message);
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Failed to update visibility");
+      toast.error(
+        err instanceof Error ? err.message : "Failed to update visibility",
+      );
     }
   }, [resumeId]);
 
-  return { resume, updateField, save, isSaving, isLoading, isDirty, toggleVisibility };
+  return {
+    resume,
+    updateField,
+    save,
+    isSaving,
+    isLoading,
+    isDirty,
+    toggleVisibility,
+  };
 }

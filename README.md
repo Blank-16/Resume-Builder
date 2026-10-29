@@ -6,15 +6,15 @@ A production-grade, ATS-optimized resume builder built with React, Node.js/Expre
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 19, TypeScript 5, Vite 7, Tailwind CSS v4 |
-| State | Redux Toolkit |
-| Backend | Node.js, Express 5, TypeScript 5 |
-| Database | MongoDB, Mongoose 9 |
-| Validation | Zod (frontend + backend) |
-| Auth | JWT + bcrypt |
-| Linting | ESLint + typescript-eslint (strict) |
+| Layer      | Technology                                      |
+| ---------- | ----------------------------------------------- |
+| Frontend   | React 19, TypeScript 5, Vite 7, Tailwind CSS v4 |
+| State      | Redux Toolkit                                   |
+| Backend    | Node.js, Express 5, TypeScript 5                |
+| Database   | MongoDB, Mongoose 9                             |
+| Validation | Zod (frontend + backend)                        |
+| Auth       | JWT + bcrypt                                    |
+| Linting    | ESLint + typescript-eslint (strict)             |
 
 ---
 
@@ -172,22 +172,22 @@ All endpoints return `{ message: string, data?: T }`.
 
 ### Auth — `/api/auth`
 
-| Method | Path | Auth | Body | Response |
-|---|---|---|---|---|
-| POST | `/register` | — | `{ name, email, password }` | `{ token, user }` |
-| POST | `/login` | — | `{ email, password }` | `{ token, user }` |
-| GET | `/me` | Bearer | — | `User` |
+| Method | Path        | Auth   | Body                        | Response          |
+| ------ | ----------- | ------ | --------------------------- | ----------------- |
+| POST   | `/register` | —      | `{ name, email, password }` | `{ token, user }` |
+| POST   | `/login`    | —      | `{ email, password }`       | `{ token, user }` |
+| GET    | `/me`       | Bearer | —                           | `User`            |
 
 ### Resumes — `/api/resumes`
 
-| Method | Path | Auth | Body | Response |
-|---|---|---|---|---|
-| GET | `/` | Bearer | — | `Resume[]` |
-| POST | `/` | Bearer | `{ title }` | `Resume` |
-| GET | `/:id` | Bearer | — | `Resume` |
-| PUT | `/:id` | Bearer | `ResumeUpdatePayload` | `Resume` |
-| DELETE | `/:id` | Bearer | — | — |
-| GET | `/public/:id` | — | — | `Resume` |
+| Method | Path          | Auth   | Body                  | Response   |
+| ------ | ------------- | ------ | --------------------- | ---------- |
+| GET    | `/`           | Bearer | —                     | `Resume[]` |
+| POST   | `/`           | Bearer | `{ title }`           | `Resume`   |
+| GET    | `/:id`        | Bearer | —                     | `Resume`   |
+| PUT    | `/:id`        | Bearer | `ResumeUpdatePayload` | `Resume`   |
+| DELETE | `/:id`        | Bearer | —                     | —          |
+| GET    | `/public/:id` | —      | —                     | `Resume`   |
 
 ---
 
@@ -199,7 +199,8 @@ Adding a template requires changes in exactly **two files**.
 
 ```ts
 // server/src/types/shared.ts  AND  client/src/types/index.ts
-export type TemplateId = "classic" | "modern" | "minimal" | "executive" | "creative";
+export type TemplateId =
+  "classic" | "modern" | "minimal" | "executive" | "creative";
 //                                                                          ^^^^^^^^
 ```
 
@@ -225,12 +226,15 @@ export function CreativeTemplate({ resume }: TemplateProps) {
 // client/src/features/templates/registry/index.ts
 import { CreativeTemplate } from "../components/CreativeTemplate";
 
-export const templateRegistry: Record<TemplateId, ComponentType<TemplateProps>> = {
+export const templateRegistry: Record<
+  TemplateId,
+  ComponentType<TemplateProps>
+> = {
   classic: ClassicTemplate,
   modern: ModernTemplate,
   minimal: MinimalTemplate,
   executive: ExecutiveTemplate,
-  creative: CreativeTemplate,  // add here
+  creative: CreativeTemplate, // add here
 };
 
 export const templateDefinitions: TemplateDefinition[] = [
@@ -358,7 +362,9 @@ declare global {
 ### Zod → TypeScript inference
 
 ```ts
-export const createResumeSchema = z.object({ title: z.string().min(1).max(100) });
+export const createResumeSchema = z.object({
+  title: z.string().min(1).max(100),
+});
 export type CreateResumeInput = z.infer<typeof createResumeSchema>;
 // CreateResumeInput = { title: string }
 // The type is derived from the schema — they can never get out of sync
@@ -370,11 +376,11 @@ export type CreateResumeInput = z.infer<typeof createResumeSchema>;
 
 The architecture is designed to support these features without breaking changes:
 
-| Feature | How to add |
-|---|---|
-| Resume versioning | Add `versions: ResumeSnapshot[]` to schema; save snapshot on each `PUT` |
+| Feature                    | How to add                                                                          |
+| -------------------------- | ----------------------------------------------------------------------------------- |
+| Resume versioning          | Add `versions: ResumeSnapshot[]` to schema; save snapshot on each `PUT`             |
 | Resume sharing with expiry | Add `shareToken` and `shareExpiresAt` fields; add `/api/resumes/share/:token` route |
-| AI summary generation | Add `POST /api/resumes/:id/ai/summary`; call LLM with experience data |
-| OAuth (Google) | Add passport strategy; `authRouter` already isolated in its own module |
-| Multiple users / teams | `userId` is already indexed; add `orgId` field and org-scoped queries |
-| Resume analytics | Add `views: number` field; increment on public fetch |
+| AI summary generation      | Add `POST /api/resumes/:id/ai/summary`; call LLM with experience data               |
+| OAuth (Google)             | Add passport strategy; `authRouter` already isolated in its own module              |
+| Multiple users / teams     | `userId` is already indexed; add `orgId` field and org-scoped queries               |
+| Resume analytics           | Add `views: number` field; increment on public fetch                                |

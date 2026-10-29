@@ -33,7 +33,7 @@ export function errorHandler(
   _req: Request,
   res: Response,
   // _next must be declared even if unused — Express uses arity to identify error handlers
-  _next: NextFunction
+  _next: NextFunction,
 ): void {
   const statusCode = resolveStatus(err);
 

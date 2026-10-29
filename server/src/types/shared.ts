@@ -47,7 +47,13 @@ export interface CertificationEntry {
   url: string;
 }
 
-export type TemplateId = "classic" | "modern" | "minimal" | "executive" | "home_college" | "general_template";
+export type TemplateId =
+  | "classic"
+  | "modern"
+  | "minimal"
+  | "executive"
+  | "home_college"
+  | "general_template";
 
 // A point-in-time snapshot of resume content for version history
 export interface ResumeSnapshot {
@@ -92,9 +98,9 @@ export interface User {
 }
 
 export interface AuthPayload {
-  token:        string;
+  token: string;
   refreshToken: string;
-  user:         User;
+  user: User;
 }
 
 export interface ApiResponse<T = undefined> {
@@ -124,7 +130,11 @@ export interface AISuggestRequest {
     currentText?: string;
     position?: string;
     company?: string;
-    existingExperience?: Array<{ position: string; company: string; description: string }>;
+    existingExperience?: Array<{
+      position: string;
+      company: string;
+      description: string;
+    }>;
     skills?: string[];
   };
 }

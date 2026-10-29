@@ -1,6 +1,18 @@
-const PRESETS = ["#2563EB","#7c3aed","#16A34A","#DC2626","#9333EA","#EA580C","#0891B2","#CA8A04"];
+const PRESETS = [
+  "#2563EB",
+  "#7c3aed",
+  "#16A34A",
+  "#DC2626",
+  "#9333EA",
+  "#EA580C",
+  "#0891B2",
+  "#CA8A04",
+];
 
-interface Props { value: string; onChange: (c: string) => void; }
+interface Props {
+  value: string;
+  onChange: (c: string) => void;
+}
 
 export function ColorPicker({ value, onChange }: Props) {
   return (
