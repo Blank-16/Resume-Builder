@@ -4,18 +4,18 @@ import type { AIField, AISuggestRequest } from "@/types";
 import toast from "react-hot-toast";
 
 interface UseAISuggestOptions {
-  field:   AIField;
+  field: AIField;
   context: AISuggestRequest["context"];
   onAccept: (suggestion: string) => void;
 }
 
 interface UseAISuggestResult {
-  suggestion:   string;
-  isLoading:    boolean;
-  isOpen:       boolean;
-  generate:     () => Promise<void>;
-  accept:       () => void;
-  dismiss:      () => void;
+  suggestion: string;
+  isLoading: boolean;
+  isOpen: boolean;
+  generate: () => Promise<void>;
+  accept: () => void;
+  dismiss: () => void;
 }
 
 export function useAISuggest({
@@ -24,8 +24,8 @@ export function useAISuggest({
   onAccept,
 }: UseAISuggestOptions): UseAISuggestResult {
   const [suggestion, setSuggestion] = useState("");
-  const [isLoading,  setIsLoading]  = useState(false);
-  const [isOpen,     setIsOpen]     = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const generate = useCallback(async () => {
     setIsLoading(true);

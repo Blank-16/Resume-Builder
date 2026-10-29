@@ -1,78 +1,84 @@
 // All shared types used throughout the client
 
-export type TemplateId = "classic" | "modern" | "minimal" | "executive" | "home_college" | "general_template";
+export type TemplateId =
+  | "classic"
+  | "modern"
+  | "minimal"
+  | "executive"
+  | "home_college"
+  | "general_template";
 
 export interface PersonalInfo {
   fullName: string;
-  email:    string;
-  phone:    string;
+  email: string;
+  phone: string;
   location: string;
   linkedin: string;
-  website:  string;
-  github:   string;
-  image:    string;
+  website: string;
+  github: string;
+  image: string;
 }
 
 export interface ExperienceEntry {
-  id:          string;
-  company:     string;
-  position:    string;
-  startDate:   string;
-  endDate:     string;
-  isCurrent:   boolean;
+  id: string;
+  company: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
   description: string;
 }
 
 export interface EducationEntry {
-  id:             string;
-  institution:    string;
-  degree:         string;
-  field:          string;
+  id: string;
+  institution: string;
+  degree: string;
+  field: string;
   graduationDate: string;
-  gpa:            string;
+  gpa: string;
 }
 
 export interface ProjectEntry {
-  id:           string;
-  name:         string;
-  type:         string;
-  description:  string;
-  url:          string;
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  url: string;
   technologies: string[];
 }
 
 export interface CertificationEntry {
-  id:     string;
-  name:   string;
+  id: string;
+  name: string;
   issuer: string;
-  date:   string;
-  url:    string;
+  date: string;
+  url: string;
 }
 
 export interface ResumeSnapshot {
   snapshotId: string;
-  savedAt:    string;
-  title:      string;
-  content:    string;
+  savedAt: string;
+  title: string;
+  content: string;
 }
 
 export interface Resume {
-  _id:                string;
-  userId:             string;
-  title:              string;
-  isPublic:           boolean;
-  template:           TemplateId;
-  accentColor:        string;
-  professionalSummary:string;
-  personalInfo:       PersonalInfo;
-  experience:         ExperienceEntry[];
-  education:          EducationEntry[];
-  projects:           ProjectEntry[];
-  certifications:     CertificationEntry[];
-  skills:             string[];
-  versions:           ResumeSnapshot[];
-  createdAt:          string;
-  updatedAt:          string;
+  _id: string;
+  userId: string;
+  title: string;
+  isPublic: boolean;
+  template: TemplateId;
+  accentColor: string;
+  professionalSummary: string;
+  personalInfo: PersonalInfo;
+  experience: ExperienceEntry[];
+  education: EducationEntry[];
+  projects: ProjectEntry[];
+  certifications: CertificationEntry[];
+  skills: string[];
+  versions: ResumeSnapshot[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type ResumeUpdatePayload = Partial<
@@ -80,22 +86,22 @@ export type ResumeUpdatePayload = Partial<
 >;
 
 export interface User {
-  _id:       string;
-  name:      string;
-  email:     string;
+  _id: string;
+  name: string;
+  email: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface AuthPayload {
-  token:        string;
+  token: string;
   refreshToken: string;
-  user:         User;
+  user: User;
 }
 
 export interface ApiResponse<T = undefined> {
   message: string;
-  data?:   T;
+  data?: T;
 }
 
 export interface TemplateProps {
@@ -103,8 +109,8 @@ export interface TemplateProps {
 }
 
 export interface TemplateDefinition {
-  id:          TemplateId;
-  name:        string;
+  id: TemplateId;
+  name: string;
   description: string;
 }
 
@@ -112,13 +118,17 @@ export interface TemplateDefinition {
 export type AIField = "summary" | "experience_description";
 
 export interface AISuggestRequest {
-  field:   AIField;
+  field: AIField;
   context: {
-    currentText?:        string;
-    position?:           string;
-    company?:            string;
-    existingExperience?: Array<{ position: string; company: string; description: string }>;
-    skills?:             string[];
+    currentText?: string;
+    position?: string;
+    company?: string;
+    existingExperience?: Array<{
+      position: string;
+      company: string;
+      description: string;
+    }>;
+    skills?: string[];
   };
 }
 

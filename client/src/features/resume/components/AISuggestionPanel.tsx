@@ -1,12 +1,12 @@
 import { Sparkles, Check, X, Loader2 } from "lucide-react";
 
 interface Props {
-  isLoading:  boolean;
-  isOpen:     boolean;
+  isLoading: boolean;
+  isOpen: boolean;
   suggestion: string;
   onGenerate: () => void;
-  onAccept:   () => void;
-  onDismiss:  () => void;
+  onAccept: () => void;
+  onDismiss: () => void;
   buttonLabel?: string;
 }
 
@@ -28,30 +28,52 @@ export function AISuggestionPanel({
         disabled={isLoading}
         className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all disabled:opacity-60"
         style={{
-          background:  "var(--accent-dim)",
-          color:       "var(--accent-text)",
-          border:      "1px solid color-mix(in oklch, var(--accent) 35%, transparent)",
+          background: "var(--accent-dim)",
+          color: "var(--accent-text)",
+          border:
+            "1px solid color-mix(in oklch, var(--accent) 35%, transparent)",
+          transform: "translateY(0)",
+          transition: "all var(--t-fast) var(--ease-spring)",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.transform =
+            "translateY(-1px)";
+          (e.currentTarget as HTMLButtonElement).style.boxShadow =
+            "var(--shadow-sm)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.transform = "";
+          (e.currentTarget as HTMLButtonElement).style.boxShadow = "";
         }}
       >
-        {isLoading
-          ? <Loader2 className="size-3.5 animate-spin" />
-          : <Sparkles className="size-3.5" />}
+        {isLoading ? (
+          <Loader2 className="size-3.5 animate-spin" />
+        ) : (
+          <Sparkles className="size-3.5" />
+        )}
         {isLoading ? "Generating…" : buttonLabel}
       </button>
 
       {/* Suggestion preview panel */}
       {isOpen && suggestion && (
         <div
-          className="rounded-xl p-4 space-y-3 anim-fade-up"
+          className="rounded-xl p-4 space-y-3 accordion-body"
           style={{
-            background:  "var(--accent-dim)",
-            border:      "1px solid color-mix(in oklch, var(--accent) 30%, transparent)",
+            background: "var(--accent-dim)",
+            border:
+              "1px solid color-mix(in oklch, var(--accent) 30%, transparent)",
           }}
         >
           {/* Header */}
           <div className="flex items-center gap-2">
-            <Sparkles className="size-3.5 shrink-0" style={{ color: "var(--accent-text)" }} />
-            <span className="text-xs font-semibold" style={{ color: "var(--accent-text)" }}>
+            <Sparkles
+              className="size-3.5 shrink-0"
+              style={{ color: "var(--accent-text)" }}
+            />
+            <span
+              className="text-xs font-semibold"
+              style={{ color: "var(--accent-text)" }}
+            >
               AI Suggestion
             </span>
           </div>

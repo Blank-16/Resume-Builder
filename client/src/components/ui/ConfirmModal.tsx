@@ -2,21 +2,21 @@ import { useEffect, useRef } from "react";
 import { AlertTriangle, X } from "lucide-react";
 
 interface Props {
-  title:       string;
-  message:     string;
+  title: string;
+  message: string;
   confirmLabel?: string;
-  cancelLabel?:  string;
-  danger?:       boolean;
-  onConfirm:   () => void;
-  onCancel:    () => void;
+  cancelLabel?: string;
+  danger?: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
 export function ConfirmModal({
   title,
   message,
   confirmLabel = "Confirm",
-  cancelLabel  = "Cancel",
-  danger       = false,
+  cancelLabel = "Cancel",
+  danger = false,
   onConfirm,
   onCancel,
 }: Props) {
@@ -42,17 +42,22 @@ export function ConfirmModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      onClick={(e) => { if (e.target === e.currentTarget) onCancel(); }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onCancel();
+      }}
     >
       <div className="modal">
         <div className="modal-header">
           <div className="flex items-center gap-3">
             {danger && (
               <div
-                className="size-8 rounded-xl flex items-center justify-center shrink-0"
+                className="size-8 rounded-xl flex items-center justify-center shrink-0 anim-bounce-in"
                 style={{ background: "var(--danger-dim)" }}
               >
-                <AlertTriangle className="size-4" style={{ color: "var(--danger)" }} />
+                <AlertTriangle
+                  className="size-4"
+                  style={{ color: "var(--danger)" }}
+                />
               </div>
             )}
             <h2

@@ -8,7 +8,10 @@ export function ExecutiveTemplate({ resume }: TemplateProps) {
   return (
     <article className="max-w-4xl mx-auto bg-white text-gray-900 text-[13px] font-sans">
       {/* Top band */}
-      <header className="px-10 pt-10 pb-6" style={{ borderBottom: `4px solid ${color}` }}>
+      <header
+        className="px-10 pt-10 pb-6"
+        style={{ borderBottom: `4px solid ${color}` }}
+      >
         <h1 className="text-4xl font-black tracking-tight uppercase text-gray-900 mb-1">
           {p.fullName || "Your Name"}
         </h1>
@@ -68,7 +71,9 @@ export function ExecutiveTemplate({ resume }: TemplateProps) {
             >
               Executive Summary
             </h2>
-            <p className="text-gray-700 leading-relaxed">{resume.professionalSummary}</p>
+            <p className="text-gray-700 leading-relaxed">
+              {resume.professionalSummary}
+            </p>
           </section>
         )}
 
@@ -85,7 +90,9 @@ export function ExecutiveTemplate({ resume }: TemplateProps) {
               {resume.experience.map((exp) => (
                 <div key={exp.id} className="grid grid-cols-[1fr_auto] gap-x-4">
                   <div>
-                    <h3 className="font-bold text-gray-900 text-sm">{exp.position}</h3>
+                    <h3 className="font-bold text-gray-900 text-sm">
+                      {exp.position}
+                    </h3>
                     <p className="font-semibold text-gray-600">{exp.company}</p>
                     {exp.description && (
                       <p className="text-gray-700 whitespace-pre-line mt-1.5 text-xs leading-relaxed">
@@ -117,12 +124,15 @@ export function ExecutiveTemplate({ resume }: TemplateProps) {
               <div className="space-y-3">
                 {resume.education.map((edu) => (
                   <div key={edu.id}>
-                    <h3 className="font-bold text-gray-900">{edu.institution}</h3>
+                    <h3 className="font-bold text-gray-900">
+                      {edu.institution}
+                    </h3>
                     <p className="text-xs text-gray-600">
                       {[edu.degree, edu.field].filter(Boolean).join(", ")}
                     </p>
                     <p className="text-xs text-gray-400">
-                      {edu.graduationDate && formatMonthYear(edu.graduationDate)}
+                      {edu.graduationDate &&
+                        formatMonthYear(edu.graduationDate)}
                       {edu.gpa && ` · GPA ${edu.gpa}`}
                     </p>
                   </div>
@@ -142,8 +152,14 @@ export function ExecutiveTemplate({ resume }: TemplateProps) {
               </h2>
               <ul className="flex flex-wrap gap-x-3 gap-y-1">
                 {resume.skills.map((skill, i) => (
-                  <li key={i} className="text-xs text-gray-700 flex items-center gap-1">
-                    <span className="size-1 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                  <li
+                    key={i}
+                    className="text-xs text-gray-700 flex items-center gap-1"
+                  >
+                    <span
+                      className="size-1 rounded-full shrink-0"
+                      style={{ backgroundColor: color }}
+                    />
                     {skill}
                   </li>
                 ))}
@@ -166,17 +182,31 @@ export function ExecutiveTemplate({ resume }: TemplateProps) {
                 <div key={proj.id}>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-bold text-gray-900">{proj.name}</h3>
-                    {proj.type && <span className="text-xs text-gray-400">({proj.type})</span>}
+                    {proj.type && (
+                      <span className="text-xs text-gray-400">
+                        ({proj.type})
+                      </span>
+                    )}
                     {proj.url && (
-                      <a href={proj.url} target="_blank" rel="noreferrer" className="text-xs underline" style={{ color }}>
+                      <a
+                        href={proj.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs underline"
+                        style={{ color }}
+                      >
                         View Project
                       </a>
                     )}
                   </div>
                   {proj.technologies.length > 0 && (
-                    <p className="text-xs text-gray-400 mb-0.5">{proj.technologies.join(", ")}</p>
+                    <p className="text-xs text-gray-400 mb-0.5">
+                      {proj.technologies.join(", ")}
+                    </p>
                   )}
-                  {proj.description && <p className="text-xs text-gray-700">{proj.description}</p>}
+                  {proj.description && (
+                    <p className="text-xs text-gray-700">{proj.description}</p>
+                  )}
                 </div>
               ))}
             </div>
@@ -194,12 +224,21 @@ export function ExecutiveTemplate({ resume }: TemplateProps) {
             </h2>
             <ul className="space-y-1">
               {resume.certifications.map((cert) => (
-                <li key={cert.id} className="flex justify-between flex-wrap gap-1 text-xs">
+                <li
+                  key={cert.id}
+                  className="flex justify-between flex-wrap gap-1 text-xs"
+                >
                   <span>
                     <span className="font-semibold">{cert.name}</span>
-                    {cert.issuer && <span className="text-gray-500"> · {cert.issuer}</span>}
+                    {cert.issuer && (
+                      <span className="text-gray-500"> · {cert.issuer}</span>
+                    )}
                   </span>
-                  {cert.date && <time className="text-gray-400">{formatMonthYear(cert.date)}</time>}
+                  {cert.date && (
+                    <time className="text-gray-400">
+                      {formatMonthYear(cert.date)}
+                    </time>
+                  )}
                 </li>
               ))}
             </ul>

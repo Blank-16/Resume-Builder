@@ -1,4 +1,8 @@
-import express, { type Request, type Response, type NextFunction } from "express";
+import express, {
+  type Request,
+  type Response,
+  type NextFunction,
+} from "express";
 import cors from "cors";
 import { env } from "./config/env.js";
 import { connectDB } from "./config/db.js";
@@ -14,13 +18,19 @@ const app = express();
 
 /* ── Security headers ── */
 app.use((_req: Request, res: Response, next: NextFunction) => {
-  res.setHeader("X-Content-Type-Options",  "nosniff");
-  res.setHeader("X-Frame-Options",         "DENY");
-  res.setHeader("X-XSS-Protection",        "1; mode=block");
-  res.setHeader("Referrer-Policy",         "strict-origin-when-cross-origin");
-  res.setHeader("Permissions-Policy",      "camera=(), microphone=(), geolocation=()");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()",
+  );
   if (!env.isDev) {
-    res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    res.setHeader(
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains",
+    );
   }
   next();
 });
@@ -31,14 +41,16 @@ app.use(
     origin(origin, cb) {
       if (!origin) return cb(null, true);
       if (origin === env.clientUrl) return cb(null, true);
-      const err = new Error(`CORS: origin '${origin}' is not allowed`) as Error & { statusCode: number };
+      const err = new Error(
+        `CORS: origin '${origin}' is not allowed`,
+      ) as Error & { statusCode: number };
       err.statusCode = 403;
       cb(err);
     },
     credentials: true,
-    methods:     ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 app.use(express.json({ limit: "1mb" }));
@@ -50,10 +62,10 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok", env: env.nodeEnv });
 });
 
-app.use("/api/auth",    authRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/resumes", resumeRouter);
-app.use("/api/ai",      aiRouter);
-app.use("/api/users",   userRouter);
+app.use("/api/ai", aiRouter);
+app.use("/api/users", userRouter);
 
 /* ── Global error handler (must be last) ── */
 app.use(errorHandler);
@@ -61,7 +73,9 @@ app.use(errorHandler);
 async function main(): Promise<void> {
   await connectDB();
   app.listen(env.port, () => {
-    console.log(`Server running → http://localhost:${env.port}  [${env.nodeEnv}]`);
+    console.log(
+      `Server running → http://localhost:${env.port}  [${env.nodeEnv}]`,
+    );
   });
 }
 

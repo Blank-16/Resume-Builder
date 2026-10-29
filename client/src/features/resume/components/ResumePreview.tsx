@@ -23,9 +23,7 @@ class TemplateErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div
-          className="min-h-[600px] flex flex-col items-center justify-center gap-3 p-8 text-center bg-white"
-        >
+        <div className="min-h-[600px] flex flex-col items-center justify-center gap-3 p-8 text-center bg-white">
           <p className="text-sm font-semibold text-gray-700">
             Failed to render this template
           </p>
@@ -33,7 +31,7 @@ class TemplateErrorBoundary extends Component<
           <button
             type="button"
             onClick={() => this.setState({ hasError: false, message: "" })}
-            className="text-xs px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors text-gray-600"
+            className="btn btn-surface text-xs px-3 py-1.5"
           >
             Retry
           </button>
@@ -54,7 +52,11 @@ export function ResumePreview({ resume }: Props) {
     <div
       id="resume-preview"
       className="bg-white overflow-hidden"
-      style={{ minHeight: "1000px", borderRadius: "8px", boxShadow: "0 4px 24px rgba(0,0,0,0.4)" }}
+      style={{
+        minHeight: "1000px",
+        borderRadius: "8px",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
+      }}
     >
       <TemplateErrorBoundary>
         <Template resume={resume} />

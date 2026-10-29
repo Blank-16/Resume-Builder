@@ -6,7 +6,7 @@ import type { TemplateProps } from "@/types";
 // bold section headings, bullet-point driven experience/projects.
 
 export function GeneralTemplate({ resume }: TemplateProps) {
-  const p     = resume.personalInfo;
+  const p = resume.personalInfo;
   const color = resume.accentColor || "#1e40af";
 
   const clean = (url: string) => url.replace(/^https?:\/\/(www\.)?/i, "");
@@ -14,10 +14,12 @@ export function GeneralTemplate({ resume }: TemplateProps) {
   return (
     <article className="bg-white text-gray-900 font-sans text-[13px] leading-relaxed">
       <div className="max-w-4xl mx-auto px-10 py-8">
-
         {/* Header — blockquote style matching the docx */}
         <header className="mb-7 pl-4 border-l-4" style={{ borderColor: color }}>
-          <h1 className="text-2xl font-extrabold tracking-tight mb-1" style={{ color }}>
+          <h1
+            className="text-2xl font-extrabold tracking-tight mb-1"
+            style={{ color }}
+          >
             {p.fullName || "Your Name"}
           </h1>
           {p.location && (
@@ -39,8 +41,13 @@ export function GeneralTemplate({ resume }: TemplateProps) {
             {p.linkedin && (
               <span>
                 <span className="mr-0.5">🔗</span>
-                <a href={p.linkedin} target="_blank" rel="noreferrer"
-                  className="underline" style={{ color }}>
+                <a
+                  href={p.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                  style={{ color }}
+                >
                   {clean(p.linkedin)}
                 </a>
               </span>
@@ -48,16 +55,26 @@ export function GeneralTemplate({ resume }: TemplateProps) {
             {p.github && (
               <span>
                 <span className="mr-0.5">🐙</span>
-                <a href={p.github} target="_blank" rel="noreferrer"
-                  className="underline" style={{ color }}>
+                <a
+                  href={p.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                  style={{ color }}
+                >
                   {clean(p.github)}
                 </a>
               </span>
             )}
             {p.website && (
               <span>
-                <a href={p.website} target="_blank" rel="noreferrer"
-                  className="underline" style={{ color }}>
+                <a
+                  href={p.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                  style={{ color }}
+                >
                   {clean(p.website)}
                 </a>
               </span>
@@ -69,7 +86,9 @@ export function GeneralTemplate({ resume }: TemplateProps) {
         {resume.professionalSummary && (
           <section className="mb-6">
             <SectionHeading color={color}>Objective</SectionHeading>
-            <p className="text-gray-700 leading-relaxed">{resume.professionalSummary}</p>
+            <p className="text-gray-700 leading-relaxed">
+              {resume.professionalSummary}
+            </p>
           </section>
         )}
 
@@ -105,7 +124,9 @@ export function GeneralTemplate({ resume }: TemplateProps) {
           <section className="mb-6">
             <SectionHeading color={color}>Technical Skills</SectionHeading>
             <div className="text-sm text-gray-700">
-              <span className="font-bold" style={{ color }}>Skills: </span>
+              <span className="font-bold" style={{ color }}>
+                Skills:{" "}
+              </span>
               {resume.skills.join(", ")}
             </div>
           </section>
@@ -127,8 +148,13 @@ export function GeneralTemplate({ resume }: TemplateProps) {
                       </span>
                     )}
                     {proj.url && (
-                      <a href={proj.url} target="_blank" rel="noreferrer"
-                        className="font-semibold underline text-xs" style={{ color }}>
+                      <a
+                        href={proj.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-semibold underline text-xs"
+                        style={{ color }}
+                      >
                         Live
                       </a>
                     )}
@@ -136,15 +162,18 @@ export function GeneralTemplate({ resume }: TemplateProps) {
                   {/* Description as bullet lines */}
                   {proj.description && (
                     <ul className="mt-1 space-y-0.5 text-gray-700">
-                      {proj.description.split("\n").filter(Boolean).map((line, i) => {
-                        const text = line.replace(/^[•\-*]\s*/, "");
-                        return (
-                          <li key={i} className="flex gap-1.5">
-                            <span className="shrink-0 mt-px">•</span>
-                            <span>{text}</span>
-                          </li>
-                        );
-                      })}
+                      {proj.description
+                        .split("\n")
+                        .filter(Boolean)
+                        .map((line, i) => {
+                          const text = line.replace(/^[•\-*]\s*/, "");
+                          return (
+                            <li key={i} className="flex gap-1.5">
+                              <span className="shrink-0 mt-px">•</span>
+                              <span>{text}</span>
+                            </li>
+                          );
+                        })}
                     </ul>
                   )}
                 </div>
@@ -162,9 +191,14 @@ export function GeneralTemplate({ resume }: TemplateProps) {
                 <div key={exp.id}>
                   <div className="flex justify-between items-start flex-wrap gap-1">
                     <div>
-                      <span className="font-bold" style={{ color }}>{exp.company}</span>
+                      <span className="font-bold" style={{ color }}>
+                        {exp.company}
+                      </span>
                       {exp.position && (
-                        <span className="font-semibold text-gray-700"> | {exp.position}</span>
+                        <span className="font-semibold text-gray-700">
+                          {" "}
+                          | {exp.position}
+                        </span>
                       )}
                     </div>
                     <span className="text-xs text-gray-500 shrink-0">
@@ -175,15 +209,18 @@ export function GeneralTemplate({ resume }: TemplateProps) {
                   </div>
                   {exp.description && (
                     <ul className="mt-1 space-y-0.5 text-gray-700">
-                      {exp.description.split("\n").filter(Boolean).map((line, i) => {
-                        const text = line.replace(/^[•\-*]\s*/, "");
-                        return (
-                          <li key={i} className="flex gap-1.5">
-                            <span className="shrink-0 mt-px">•</span>
-                            <span>{text}</span>
-                          </li>
-                        );
-                      })}
+                      {exp.description
+                        .split("\n")
+                        .filter(Boolean)
+                        .map((line, i) => {
+                          const text = line.replace(/^[•\-*]\s*/, "");
+                          return (
+                            <li key={i} className="flex gap-1.5">
+                              <span className="shrink-0 mt-px">•</span>
+                              <span>{text}</span>
+                            </li>
+                          );
+                        })}
                     </ul>
                   )}
                 </div>
@@ -198,39 +235,59 @@ export function GeneralTemplate({ resume }: TemplateProps) {
             <SectionHeading color={color}>Certifications</SectionHeading>
             <ul className="space-y-1">
               {resume.certifications.map((cert) => (
-                <li key={cert.id} className="flex justify-between items-start gap-2">
+                <li
+                  key={cert.id}
+                  className="flex justify-between items-start gap-2"
+                >
                   <div className="flex gap-1.5">
                     <span className="shrink-0 mt-px">•</span>
                     <span>
                       <span className="font-semibold">{cert.name}</span>
                       {cert.issuer && (
                         <span className="text-gray-600">
-                          {" "}(
-                          {cert.url
-                            ? <a href={cert.url} target="_blank" rel="noreferrer"
-                                className="underline" style={{ color }}>{cert.issuer}</a>
-                            : cert.issuer}
+                          {" "}
+                          (
+                          {cert.url ? (
+                            <a
+                              href={cert.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="underline"
+                              style={{ color }}
+                            >
+                              {cert.issuer}
+                            </a>
+                          ) : (
+                            cert.issuer
+                          )}
                           )
                         </span>
                       )}
                     </span>
                   </div>
                   {cert.date && (
-                    <span className="text-xs text-gray-500 shrink-0">{formatMonthYear(cert.date)}</span>
+                    <span className="text-xs text-gray-500 shrink-0">
+                      {formatMonthYear(cert.date)}
+                    </span>
                   )}
                 </li>
               ))}
             </ul>
           </section>
         )}
-
       </div>
     </article>
   );
 }
 
 // Shared section heading — bold, coloured underline matching the docx style
-function SectionHeading({ color, children }: { color: string; children: React.ReactNode }) {
+function SectionHeading({
+  color,
+  children,
+}: {
+  color: string;
+  children: React.ReactNode;
+}) {
   return (
     <h2
       className="font-bold text-sm uppercase tracking-wide pb-1 mb-3"

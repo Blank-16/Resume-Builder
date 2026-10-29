@@ -3,17 +3,20 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "@/hooks/useAppStore";
 import {
-  setCredentials, setAccessToken, setLoading, logout,
+  setCredentials,
+  setAccessToken,
+  setLoading,
+  logout,
 } from "@/store/features/authSlice";
 import { authApi } from "@/services/api";
-import { ProtectedRoute }  from "@/components/ui/ProtectedRoute";
-import { ThemeProvider }   from "@/components/ui/ThemeProvider";
-import { HomePage }          from "@/features/home/HomePage";
-import { LoginPage }         from "@/features/resume/LoginPage";
-import { DashboardPage }     from "@/features/resume/DashboardPage";
+import { ProtectedRoute } from "@/components/ui/ProtectedRoute";
+import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import { HomePage } from "@/features/home/HomePage";
+import { LoginPage } from "@/features/resume/LoginPage";
+import { DashboardPage } from "@/features/resume/DashboardPage";
 import { ResumeBuilderPage } from "@/features/resume/ResumeBuilderPage";
 import { PublicPreviewPage } from "@/features/resume/PublicPreviewPage";
-import { SettingsPage }      from "@/features/resume/SettingsPage";
+import { SettingsPage } from "@/features/resume/SettingsPage";
 
 // How many ms before access token expiry to trigger a silent refresh.
 // Access tokens last 15 min (900_000 ms) — refresh 2 min early.
@@ -21,8 +24,8 @@ const REFRESH_BEFORE_EXPIRY_MS = 2 * 60 * 1000;
 const ACCESS_TOKEN_LIFETIME_MS = 15 * 60 * 1000;
 
 function AppBootstrap() {
-  const dispatch     = useAppDispatch();
-  const token        = useAppSelector((s) => s.auth.token);
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((s) => s.auth.token);
   const refreshToken = useAppSelector((s) => s.auth.refreshToken);
   const refreshTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -72,7 +75,9 @@ function AppBootstrap() {
               // Re-fetch user profile with new access token
               const { data: meData } = await authApi.me();
               if (meData.data) {
-                dispatch(setCredentials({ token: data.data.token, user: meData.data }));
+                dispatch(
+                  setCredentials({ token: data.data.token, user: meData.data }),
+                );
                 scheduleRefresh();
                 return;
               }
@@ -90,7 +95,7 @@ function AppBootstrap() {
     return () => {
       if (refreshTimer.current) clearTimeout(refreshTimer.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // When token changes (e.g. after login), restart the refresh schedule
@@ -112,32 +117,49 @@ export default function App() {
         toastOptions={{
           duration: 3000,
           style: {
-            fontSize:     "13px",
-            maxWidth:     "360px",
-            borderRadius: "10px",
-            background:   "var(--surface-raised)",
-            color:        "var(--text-primary)",
-            border:       "1px solid var(--border-strong)",
+            fontSize: "13px",
+            maxWidth: "360px",
+            borderRadius: "var(--r-xl)",
+            background: "var(--surface-raised)",
+            color: "var(--text-primary)",
+            border: "1px solid var(--border-strong)",
+            boxShadow: "var(--shadow-lg)",
+            animation: "slide-up-fade 0.28s var(--ease-spring) both",
           },
         }}
       />
       <Routes>
         {/* Public */}
-        <Route path="/"            element={<HomePage />} />
-        <Route path="/login"       element={<LoginPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/preview/:id" element={<PublicPreviewPage />} />
 
         {/* Protected */}
-        <Route path="/dashboard" element={
-          <ProtectedRoute><DashboardPage /></ProtectedRoute>
-        } />
-        <Route path="/builder/:id" element={
-          <ProtectedRoute><ResumeBuilderPage /></ProtectedRoute>
-        } />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/builder/:id"
+          element={
+            <ProtectedRoute>
+              <ResumeBuilderPage />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/settings" element={
-          <ProtectedRoute><SettingsPage /></ProtectedRoute>
-        } />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
