@@ -59,21 +59,17 @@ export async function getPublicResume(
 export async function createResume(req: Request, res: Response): Promise<void> {
   const parsed = createResumeSchema.safeParse(req.body);
   if (!parsed.success) {
-    res
-      .status(400)
-      .json({
-        message: "Validation failed",
-        errors: parsed.error.flatten().fieldErrors,
-      });
+    res.status(400).json({
+      message: "Validation failed",
+      errors: parsed.error.flatten().fieldErrors,
+    });
     return;
   }
   const resume = await resumeService.create(req.userId!, parsed.data);
-  res
-    .status(201)
-    .json({
-      message: "Resume created",
-      data: resume,
-    } satisfies ApiResponse<Resume>);
+  res.status(201).json({
+    message: "Resume created",
+    data: resume,
+  } satisfies ApiResponse<Resume>);
 }
 
 export async function duplicateResume(
@@ -90,12 +86,10 @@ export async function duplicateResume(
     res.status(404).json({ message: "Resume not found" });
     return;
   }
-  res
-    .status(201)
-    .json({
-      message: "Resume duplicated",
-      data: resume,
-    } satisfies ApiResponse<Resume>);
+  res.status(201).json({
+    message: "Resume duplicated",
+    data: resume,
+  } satisfies ApiResponse<Resume>);
 }
 
 export async function updateResume(req: Request, res: Response): Promise<void> {
@@ -106,12 +100,10 @@ export async function updateResume(req: Request, res: Response): Promise<void> {
   }
   const parsed = updateResumeSchema.safeParse(req.body);
   if (!parsed.success) {
-    res
-      .status(400)
-      .json({
-        message: "Validation failed",
-        errors: parsed.error.flatten().fieldErrors,
-      });
+    res.status(400).json({
+      message: "Validation failed",
+      errors: parsed.error.flatten().fieldErrors,
+    });
     return;
   }
   const resume = await resumeService.update(id, req.userId!, parsed.data);

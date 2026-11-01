@@ -67,20 +67,26 @@ export async function suggestContent(
 
   const parsed = suggestSchema.safeParse(req.body);
   if (!parsed.success) {
-    res
-      .status(400)
-      .json({
-        message: "Validation failed",
-        errors: parsed.error.flatten().fieldErrors,
-      });
+    res.status(400).json({
+      message: "Validation failed",
+      errors: parsed.error.flatten().fieldErrors,
+    });
     return;
   }
 
   const { field, context } = parsed.data;
   const prompt = buildPrompt(field, context);
 
-  const baseUrl = env.openaiBaseUrl ?? "https://api.openai.com";
-  const response = await fetch(`${baseUrl}/v1/chat/completions`, {
+  const baseUrl = (env.openaiBaseUrl ?? "https://api.openai.com").replace(
+    /\/+$/,
+    "",
+  );
+  const endpoint = baseUrl.endsWith("/chat/completions")
+    ? baseUrl
+    : baseUrl.endsWith("/v1") || baseUrl.endsWith("/openai")
+      ? `${baseUrl}/chat/completions`
+      : `${baseUrl}/v1/chat/completions`;
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

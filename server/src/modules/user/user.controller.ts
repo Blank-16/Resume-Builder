@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
-import bcrypt from "bcrypt";
 import { UserModel } from "./user.schema.js";
 import type { ApiResponse, User } from "../../types/shared.js";
 
@@ -38,12 +37,10 @@ export async function updateProfile(
 ): Promise<void> {
   const parsed = updateProfileSchema.safeParse(req.body);
   if (!parsed.success) {
-    res
-      .status(400)
-      .json({
-        message: "Validation failed",
-        errors: parsed.error.flatten().fieldErrors,
-      });
+    res.status(400).json({
+      message: "Validation failed",
+      errors: parsed.error.flatten().fieldErrors,
+    });
     return;
   }
 
@@ -87,12 +84,10 @@ export async function changePassword(
 ): Promise<void> {
   const parsed = changePasswordSchema.safeParse(req.body);
   if (!parsed.success) {
-    res
-      .status(400)
-      .json({
-        message: "Validation failed",
-        errors: parsed.error.flatten().fieldErrors,
-      });
+    res.status(400).json({
+      message: "Validation failed",
+      errors: parsed.error.flatten().fieldErrors,
+    });
     return;
   }
 

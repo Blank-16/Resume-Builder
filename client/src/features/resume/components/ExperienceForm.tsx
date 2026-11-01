@@ -62,7 +62,7 @@ function ExperienceEntryAI({
           description: e.description,
         })),
     }),
-    [entry.description, entry.position, entry.company, allEntries],
+    [entry.id, entry.description, entry.position, entry.company, allEntries],
   );
 
   const ai = useAISuggest({

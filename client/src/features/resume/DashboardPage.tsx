@@ -56,7 +56,7 @@ export function DashboardPage() {
   const renameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    document.title = "Dashboard — ResumeBuilder";
+    document.title = "Dashboard | ResumeBuilder";
     resumeApi
       .list()
       .then(({ data }) => setResumes(data.data ?? []))
@@ -66,13 +66,28 @@ export function DashboardPage() {
 
   useEffect(() => {
     if (rename) renameInputRef.current?.select();
-  }, [rename?.id]);
+  }, [rename]);
 
   useEffect(() => {
     if (!openMenuId) return;
-    const close = () => setOpenMenuId(null);
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
+    function handleOutsideClick(event: MouseEvent) {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest(`[data-menu-container="${openMenuId}"]`)) {
+        return;
+      }
+      setOpenMenuId(null);
+    }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpenMenuId(null);
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [openMenuId]);
 
   async function handleCreate() {
@@ -105,17 +120,18 @@ export function DashboardPage() {
 
   async function commitRename() {
     if (!rename) return;
+    const renameId = rename.id;
     const trimmed = rename.value.trim();
     if (!trimmed) {
       setRename(null);
       return;
     }
     setResumes((p) =>
-      p.map((r) => (r._id === rename.id ? { ...r, title: trimmed } : r)),
+      p.map((r) => (r._id === renameId ? { ...r, title: trimmed } : r)),
     );
     setRename(null);
     try {
-      await resumeApi.update(rename.id, { title: trimmed });
+      await resumeApi.update(renameId, { title: trimmed });
     } catch {
       resumeApi
         .list()
@@ -155,7 +171,7 @@ export function DashboardPage() {
         />
       )}
 
-      {/* ── Sidebar ── */}
+      {/* Sidebar */}
       <aside className="sidebar w-56 shrink-0 h-screen sticky top-0 hidden lg:flex">
         {/* Logo */}
         <div className="px-5 py-5 flex items-center gap-2.5">
@@ -229,7 +245,7 @@ export function DashboardPage() {
         </div>
       </aside>
 
-      {/* ── Main ── */}
+      {/* Main */}
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Top bar */}
         <header
@@ -266,7 +282,7 @@ export function DashboardPage() {
               ) : (
                 <FilePlus className="size-3.5" />
               )}
-              {creating ? "Creating…" : "New Resume"}
+              {creating ? "Creating..." : "New Resume"}
             </button>
             {/* Mobile logout */}
             <button
@@ -315,14 +331,16 @@ export function DashboardPage() {
                 className="text-sm mb-8 max-w-xs mx-auto"
                 style={{ color: "var(--text-muted)" }}
               >
-                Create your first ATS-ready resume — it&apos;s free.
+                Create your first ATS-ready resume. It is free.
               </p>
               <button
                 type="button"
                 onClick={() => void handleCreate()}
-                className="btn btn-primary px-7 py-2.5 text-sm"
+                disabled={creating}
+                className="btn btn-primary px-7 py-2.5 text-sm flex items-center justify-center gap-2 mx-auto"
                 style={{ borderRadius: "var(--r-xl)" }}
               >
+                {creating ? <span className="spinner" /> : null}
                 Create resume <ChevronRight className="size-4" />
               </button>
             </div>
@@ -331,11 +349,15 @@ export function DashboardPage() {
               {resumes.map((resume, i) => {
                 const accent =
                   TEMPLATE_COLORS[resume.template] ?? resume.accentColor;
+                const isMenuOpen = openMenuId === resume._id;
                 return (
                   <div
                     key={resume._id}
-                    className="card resume-card anim-fade-up group"
-                    style={{ animationDelay: `${i * 45}ms` }}
+                    className="card resume-card anim-fade-up group relative"
+                    style={{
+                      animationDelay: `${i * 45}ms`,
+                      zIndex: isMenuOpen ? 30 : 1,
+                    }}
                   >
                     {/* Colour stripe */}
                     <div
@@ -364,11 +386,13 @@ export function DashboardPage() {
                             }}
                             className="input text-sm font-semibold py-1 px-2 flex-1"
                             maxLength={100}
+                            aria-label="Resume title"
                           />
                           <button
                             type="button"
                             onClick={() => void commitRename()}
                             className="btn btn-primary p-1.5"
+                            aria-label="Save title"
                           >
                             <Check className="size-3.5" />
                           </button>
@@ -376,19 +400,28 @@ export function DashboardPage() {
                             type="button"
                             onClick={() => setRename(null)}
                             className="btn btn-surface p-1.5"
+                            aria-label="Cancel rename"
                           >
                             <X className="size-3.5" />
                           </button>
                         </div>
                       ) : (
-                        <h2
-                          className="font-semibold truncate mb-0.5 cursor-pointer text-sm"
-                          style={{ color: "var(--text-primary)" }}
-                          onDoubleClick={() =>
-                            setRename({ id: resume._id, value: resume.title })
-                          }
-                        >
-                          {resume.title}
+                        <h2 className="font-semibold truncate mb-0.5 text-sm">
+                          <Link
+                            to={`/builder/${resume._id}`}
+                            className="hover:underline transition-colors block truncate"
+                            style={{ color: "var(--text-primary)" }}
+                            title={resume.title}
+                            onDoubleClick={(e) => {
+                              e.preventDefault();
+                              setRename({
+                                id: resume._id,
+                                value: resume.title,
+                              });
+                            }}
+                          >
+                            {resume.title}
+                          </Link>
                         </h2>
                       )}
 
@@ -418,16 +451,20 @@ export function DashboardPage() {
                         </Link>
                         <div
                           className="relative"
+                          data-menu-container={resume._id}
                           onClick={(e) => e.stopPropagation()}
                         >
                           <button
                             type="button"
+                            disabled={duplicating === resume._id}
                             onClick={() =>
                               setOpenMenuId((id) =>
                                 id === resume._id ? null : resume._id,
                               )
                             }
                             className="btn btn-surface p-1.5"
+                            aria-label="More options"
+                            aria-expanded={isMenuOpen}
                           >
                             {duplicating === resume._id ? (
                               <span className="spinner" />
@@ -435,7 +472,7 @@ export function DashboardPage() {
                               <MoreHorizontal className="size-4" />
                             )}
                           </button>
-                          {openMenuId === resume._id && (
+                          {isMenuOpen && (
                             <div
                               className="absolute right-0 top-full mt-2 w-40 overflow-hidden anim-slide-up"
                               style={{

@@ -9,41 +9,49 @@ interface SectionCheck {
 }
 
 function useCompletionChecks(resume: Resume): SectionCheck[] {
-  return useMemo(
-    () => [
+  return useMemo(() => {
+    const p = resume.personalInfo ?? {};
+    return [
       {
         label: "Full name",
-        done: !!resume.personalInfo.fullName.trim(),
+        done: Boolean((p.fullName ?? "").trim()),
         weight: 10,
       },
-      { label: "Email", done: !!resume.personalInfo.email.trim(), weight: 10 },
-      { label: "Phone", done: !!resume.personalInfo.phone.trim(), weight: 5 },
+      { label: "Email", done: Boolean((p.email ?? "").trim()), weight: 10 },
+      { label: "Phone", done: Boolean((p.phone ?? "").trim()), weight: 5 },
       {
         label: "Location",
-        done: !!resume.personalInfo.location.trim(),
+        done: Boolean((p.location ?? "").trim()),
         weight: 5,
       },
       {
         label: "LinkedIn",
-        done: !!resume.personalInfo.linkedin.trim(),
+        done: Boolean((p.linkedin ?? "").trim()),
         weight: 5,
       },
       {
         label: "Professional summary",
-        done: resume.professionalSummary.trim().length > 50,
+        done: (resume.professionalSummary ?? "").trim().length > 50,
         weight: 20,
       },
       {
         label: "Work experience",
-        done: resume.experience.length > 0,
+        done: (resume.experience ?? []).length > 0,
         weight: 20,
       },
-      { label: "Education", done: resume.education.length > 0, weight: 10 },
-      { label: "Skills", done: resume.skills.length >= 3, weight: 10 },
-      { label: "Projects", done: resume.projects.length > 0, weight: 5 },
-    ],
-    [resume],
-  );
+      {
+        label: "Education",
+        done: (resume.education ?? []).length > 0,
+        weight: 10,
+      },
+      { label: "Skills", done: (resume.skills ?? []).length >= 3, weight: 10 },
+      {
+        label: "Projects",
+        done: (resume.projects ?? []).length > 0,
+        weight: 5,
+      },
+    ];
+  }, [resume]);
 }
 
 interface Props {

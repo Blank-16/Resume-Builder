@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/useAppStore";
 import { setTheme, type Theme } from "@/store/features/themeSlice";
+import { Sun, Moon, Waves, Trees } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const THEMES: { id: Theme; label: string; icon: string; desc: string }[] = [
-  { id: "light", label: "Light", icon: "☀️", desc: "Clean & bright" },
-  { id: "dark", label: "Dark", icon: "🌙", desc: "Easy on the eyes" },
-  { id: "ocean", label: "Ocean", icon: "🌊", desc: "Deep blue" },
-  { id: "forest", label: "Forest", icon: "🌿", desc: "Natural green" },
+const THEMES: { id: Theme; label: string; icon: LucideIcon; desc: string }[] = [
+  { id: "light", label: "Light", icon: Sun, desc: "Clean & bright" },
+  { id: "dark", label: "Dark", icon: Moon, desc: "Easy on the eyes" },
+  { id: "ocean", label: "Ocean", icon: Waves, desc: "Deep blue" },
+  { id: "forest", label: "Forest", icon: Trees, desc: "Natural green" },
 ];
 
 export function ThemeToggle() {
@@ -33,10 +35,10 @@ export function ThemeToggle() {
         type="button"
         title="Switch theme"
         onClick={() => setOpen((v) => !v)}
-        className="btn btn-surface p-2 gap-1.5 text-xs font-medium"
+        className="btn btn-surface p-2 gap-1.5 text-xs font-medium flex items-center"
         aria-label="Theme switcher"
       >
-        <span>{active.icon}</span>
+        <active.icon className="size-3.5" />
         <span className="hidden sm:inline">{active.label}</span>
       </button>
 
@@ -82,7 +84,7 @@ export function ThemeToggle() {
                     e.currentTarget.style.transform = "";
                   }}
                 >
-                  <span className="text-base leading-none">{t.icon}</span>
+                  <t.icon className="size-4 shrink-0 text-current" />
                   <div>
                     <p className="font-semibold leading-none mb-0.5">
                       {t.label}

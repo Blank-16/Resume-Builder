@@ -28,19 +28,19 @@ export function GeneralTemplate({ resume }: TemplateProps) {
           <div className="flex flex-wrap gap-x-5 gap-y-0.5 text-sm text-gray-700">
             {p.phone && (
               <span>
-                <span className="mr-0.5">📱</span>
+                <span className="font-semibold mr-1">Phone:</span>
                 <a href={`tel:${p.phone}`}>{p.phone}</a>
               </span>
             )}
             {p.email && (
               <span>
-                <span className="mr-0.5">✉</span>
+                <span className="font-semibold mr-1">Email:</span>
                 <a href={`mailto:${p.email}`}>{p.email}</a>
               </span>
             )}
             {p.linkedin && (
               <span>
-                <span className="mr-0.5">🔗</span>
+                <span className="font-semibold mr-1">LinkedIn:</span>
                 <a
                   href={p.linkedin}
                   target="_blank"
@@ -54,7 +54,7 @@ export function GeneralTemplate({ resume }: TemplateProps) {
             )}
             {p.github && (
               <span>
-                <span className="mr-0.5">🐙</span>
+                <span className="font-semibold mr-1">GitHub:</span>
                 <a
                   href={p.github}
                   target="_blank"

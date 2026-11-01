@@ -22,7 +22,7 @@ export function ConfirmModal({
 }: Props) {
   const cancelRef = useRef<HTMLButtonElement>(null);
 
-  // Focus cancel button on open — safer default for destructive actions
+  // Focus cancel button on open (safer default for destructive actions)
   useEffect(() => {
     cancelRef.current?.focus();
   }, []);

@@ -7,8 +7,9 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix"
+    "lint": "NODE_PATH=../client/node_modules node ../client/node_modules/eslint/bin/eslint.js src",
+    "lint:fix": "NODE_PATH=../client/node_modules node ../client/node_modules/eslint/bin/eslint.js src --fix",
+    "type-check": "tsc --noEmit"
   },
   "author": "",
   "license": "ISC",

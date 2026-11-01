@@ -22,16 +22,78 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Normalise error messages and handle 401 silently for auth endpoints
+// Normalise error messages and handle 401 with silent token refresh
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (err: unknown) => void;
+}> = [];
+
+function processQueue(error: unknown, token: string | null = null) {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else if (token) {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+}
+
 api.interceptors.response.use(
   (res) => res,
-  (err: AxiosError<{ message?: string }>) => {
-    const isAuthEndpoint =
-      err.config?.url?.includes("/api/auth/me") ||
-      err.config?.url?.includes("/api/auth/login") ||
-      err.config?.url?.includes("/api/auth/register");
+  async (err: AxiosError<{ message?: string }>) => {
+    const originalRequest = err.config as
+      (typeof err.config & { _retry?: boolean }) | undefined;
+    const isAuthEndpoint = originalRequest?.url?.includes("/api/auth/");
 
-    if (err.response?.status === 401 && !isAuthEndpoint) {
+    if (
+      err.response?.status === 401 &&
+      !isAuthEndpoint &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
+      const storedRefresh = localStorage.getItem("refreshToken");
+      if (storedRefresh) {
+        if (isRefreshing) {
+          return new Promise<string>((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          })
+            .then((token) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              return api(originalRequest);
+            })
+            .catch((queueErr: unknown) => Promise.reject(queueErr));
+        }
+
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        try {
+          const { data } = await axios.post<
+            ApiResponse<Pick<AuthPayload, "token">>
+          >(`${import.meta.env.VITE_API_URL ?? ""}/api/auth/refresh`, {
+            refreshToken: storedRefresh,
+          });
+          const newToken = data.data?.token;
+          if (newToken) {
+            localStorage.setItem("token", newToken);
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            processQueue(null, newToken);
+            return api(originalRequest);
+          }
+        } catch (refreshErr) {
+          processQueue(refreshErr, null);
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          window.history.replaceState(null, "", "/login");
+          window.location.reload();
+          return Promise.reject(refreshErr);
+        } finally {
+          isRefreshing = false;
+        }
+      }
+
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
       window.history.replaceState(null, "", "/login");

@@ -62,6 +62,7 @@ export function ResumeBuilderPage() {
   const {
     resume,
     updateField,
+    resetResume,
     save,
     isSaving,
     isLoading,
@@ -296,8 +297,7 @@ export function ResumeBuilderPage() {
           resume={resume}
           onClose={() => setShowVersions(false)}
           onRestore={(r) => {
-            updateField("template", r.template);
-            /* full restore via reload */ window.location.reload();
+            resetResume(r);
           }}
         />
       )}
@@ -364,7 +364,10 @@ export function ResumeBuilderPage() {
           <ThemeSwitcher />
           <button
             type="button"
-            onClick={() => setShowVersions(true)}
+            onClick={() => {
+              if (isDirty) void save();
+              setShowVersions(true);
+            }}
             title="Version history"
             className="btn btn-surface p-2"
           >
@@ -462,19 +465,11 @@ export function ResumeBuilderPage() {
           {editorPanel}
         </div>
 
-        {/* Preview — shown on desktop always, on mobile only when tab=preview */}
+        {/* Preview — shown on desktop always, on mobile only when tab=preview, and always in print */}
         <div
-          className={`lg:sticky lg:top-[60px] self-start ${mobileTab === "editor" ? "hidden lg:block" : ""}`}
+          className={`lg:sticky lg:top-[60px] self-start print:!block ${mobileTab === "editor" ? "hidden lg:block" : ""}`}
         >
-          {/* Desktop: scaled preview */}
-          <div
-            className="hidden lg:block origin-top-left print:transform-none print:w-auto"
-            style={{ transform: "scale(0.74)", width: "135.1%" }}
-          >
-            <ResumePreview resume={resume} />
-          </div>
-          {/* Mobile: full-width preview */}
-          <div className="lg:hidden">
+          <div className="origin-top-left lg:scale-[0.74] lg:w-[135.1%] print:transform-none print:w-auto">
             <ResumePreview resume={resume} />
           </div>
         </div>

@@ -64,7 +64,7 @@ export function SummaryForm({
       />
 
       <textarea
-        value={data}
+        value={data ?? ""}
         onChange={(e) => onChange(e.target.value)}
         rows={6}
         placeholder="Results-driven software engineer with 5+ years building scalable web applications…"
@@ -76,16 +76,16 @@ export function SummaryForm({
           className="text-xs"
           style={{
             color:
-              data.length > 1800
+              (data ?? "").length > 1800
                 ? "var(--danger)"
-                : data.length > 1200
+                : (data ?? "").length > 1200
                   ? "var(--warning)"
                   : "var(--text-muted)",
             transition: "color var(--t-base) var(--ease-out)",
             fontVariantNumeric: "tabular-nums",
           }}
         >
-          {data.length} / 2000 characters
+          {(data ?? "").length} / 2000 characters
         </span>
       </div>
     </div>

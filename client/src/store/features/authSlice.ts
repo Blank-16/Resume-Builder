@@ -36,7 +36,7 @@ const authSlice = createSlice({
         localStorage.setItem("refreshToken", action.payload.refreshToken);
       }
     },
-    // Called after a silent refresh — only updates the access token
+    // Called after a silent refresh (only updates the access token)
     setAccessToken(state, action: PayloadAction<string>) {
       state.token = action.payload;
       localStorage.setItem("token", action.payload);

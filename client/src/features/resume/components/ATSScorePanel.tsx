@@ -18,27 +18,32 @@ interface ATSCheck {
 
 function useATSChecks(resume: Resume): ATSCheck[] {
   return useMemo(() => {
-    const p = resume.personalInfo;
-    const hasEmail = !!p.email.trim();
-    const hasPhone = !!p.phone.trim();
-    const hasLinkedIn = !!p.linkedin.trim();
-    const summaryLen = resume.professionalSummary.trim().length;
-    const expCount = resume.experience.length;
-    const skillCount = resume.skills.length;
-    const allExpHaveDesc = resume.experience.every(
-      (e) => e.description.trim().length > 30,
+    const p = resume.personalInfo ?? {};
+    const hasEmail = Boolean((p.email ?? "").trim());
+    const hasPhone = Boolean((p.phone ?? "").trim());
+    const hasLinkedIn = Boolean((p.linkedin ?? "").trim());
+    const summaryLen = (resume.professionalSummary ?? "").trim().length;
+    const expCount = resume.experience?.length ?? 0;
+    const skillCount = resume.skills?.length ?? 0;
+    const allExpHaveDesc =
+      expCount > 0 &&
+      resume.experience.every((e) => (e.description ?? "").trim().length > 30);
+    const bulletsUsed = (resume.experience ?? []).some(
+      (e) =>
+        (e.description ?? "").includes("•") ||
+        (e.description ?? "").includes("-"),
     );
-    const bulletsUsed = resume.experience.some(
-      (e) => e.description.includes("•") || e.description.includes("-"),
-    );
-    const hasNumbers = resume.experience.some((e) =>
-      /\d+[%$xX]|\d+\s*(percent|hours|users|customers|days|team|people)/i.test(
-        e.description,
+    const hasNumbers = (resume.experience ?? []).some((e) =>
+      /\d+[%$xX]|\d+\s*(percent|hours|users|customers|days|team|people|k|m)/i.test(
+        e.description ?? "",
       ),
     );
-    const summaryHasKeywords = resume.skills.some((s) =>
-      resume.professionalSummary.toLowerCase().includes(s.toLowerCase()),
-    );
+    const summaryLower = (resume.professionalSummary ?? "").toLowerCase();
+    const summaryHasKeywords =
+      skillCount > 0 &&
+      (resume.skills ?? []).some(
+        (s) => s.trim() && summaryLower.includes(s.toLowerCase()),
+      );
 
     return [
       {

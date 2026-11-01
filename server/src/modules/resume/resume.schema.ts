@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, type Document, type Model } from "mongoose";
 import type { Resume, TemplateId } from "../../types/shared.js";
 
 export interface ResumeDocument extends Document {
@@ -90,7 +90,14 @@ const SnapshotSchema = new Schema(
   { _id: false },
 );
 
-const templateIds: TemplateId[] = ["classic", "modern", "minimal", "executive"];
+const templateIds: TemplateId[] = [
+  "classic",
+  "modern",
+  "minimal",
+  "executive",
+  "home_college",
+  "general_template",
+];
 
 const ResumeSchema = new Schema<ResumeDocument>(
   {

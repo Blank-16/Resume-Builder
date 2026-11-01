@@ -66,6 +66,7 @@ export function useResumeBuilder({ resumeId }: Options) {
         userId: _b,
         createdAt: _c,
         updatedAt: _d,
+        versions: _e,
         ...payload
       } = latestResume.current;
       // Explicitly acknowledge unused destructured vars to satisfy the linter
@@ -73,6 +74,7 @@ export function useResumeBuilder({ resumeId }: Options) {
       void _b;
       void _c;
       void _d;
+      void _e;
 
       const { data } = await resumeApi.update(resumeId, payload);
       if (data.data) {
@@ -129,9 +131,17 @@ export function useResumeBuilder({ resumeId }: Options) {
     }
   }, [resumeId]);
 
+  const resetResume = useCallback((newResume: Resume) => {
+    if (autosaveTimer.current) clearTimeout(autosaveTimer.current);
+    setResume(newResume);
+    latestResume.current = newResume;
+    setIsDirty(false);
+  }, []);
+
   return {
     resume,
     updateField,
+    resetResume,
     save,
     isSaving,
     isLoading,

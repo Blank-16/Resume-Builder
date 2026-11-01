@@ -9,6 +9,7 @@ import type { Resume, ResumeSnapshot } from "../../types/shared.js";
 function toResume(doc: Record<string, unknown>): Resume {
   const toIso = (v: unknown): string =>
     v instanceof Date ? v.toISOString() : String(v ?? "");
+  const p = (doc["personalInfo"] ?? {}) as Record<string, unknown>;
   return {
     _id: String(doc["_id"]),
     userId: String(doc["userId"]),
@@ -17,7 +18,16 @@ function toResume(doc: Record<string, unknown>): Resume {
     template: (doc["template"] as Resume["template"]) ?? "classic",
     accentColor: String(doc["accentColor"] ?? "#2563EB"),
     professionalSummary: String(doc["professionalSummary"] ?? ""),
-    personalInfo: (doc["personalInfo"] ?? {}) as Resume["personalInfo"],
+    personalInfo: {
+      fullName: String(p["fullName"] ?? ""),
+      email: String(p["email"] ?? ""),
+      phone: String(p["phone"] ?? ""),
+      location: String(p["location"] ?? ""),
+      linkedin: String(p["linkedin"] ?? ""),
+      website: String(p["website"] ?? ""),
+      github: String(p["github"] ?? ""),
+      image: String(p["image"] ?? ""),
+    },
     experience: (doc["experience"] ?? []) as Resume["experience"],
     education: (doc["education"] ?? []) as Resume["education"],
     projects: (doc["projects"] ?? []) as Resume["projects"],

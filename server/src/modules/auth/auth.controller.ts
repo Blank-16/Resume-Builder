@@ -11,9 +11,7 @@ const authService = new AuthService();
 
 function validate<T>(
   schema: {
-    safeParse: (
-      v: unknown,
-    ) =>
+    safeParse: (v: unknown) =>
       | { success: true; data: T }
       | {
           success: false;
@@ -25,12 +23,10 @@ function validate<T>(
 ): T | null {
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
-    res
-      .status(400)
-      .json({
-        message: "Validation failed",
-        errors: parsed.error.flatten().fieldErrors,
-      });
+    res.status(400).json({
+      message: "Validation failed",
+      errors: parsed.error.flatten().fieldErrors,
+    });
     return null;
   }
   return parsed.data;
@@ -40,12 +36,10 @@ export async function register(req: Request, res: Response): Promise<void> {
   const input = validate(registerSchema, req.body, res);
   if (!input) return;
   const payload = await authService.register(input);
-  res
-    .status(201)
-    .json({
-      message: "Account created",
-      data: payload,
-    } satisfies ApiResponse<AuthPayload>);
+  res.status(201).json({
+    message: "Account created",
+    data: payload,
+  } satisfies ApiResponse<AuthPayload>);
 }
 
 export async function login(req: Request, res: Response): Promise<void> {
